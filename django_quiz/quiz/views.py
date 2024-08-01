@@ -29,7 +29,7 @@ class QuizView(View):
 class QuizQuestionView(View):
     def get(self, request, quiz_title: str, question_id: int):
         quiz = Quiz.objects.get(url_title=quiz_title)
-        question = Question.objects.get(quiz=quiz, pk=question_id)
+        question = Question.objects.filter(quiz=quiz)[question_id]
         choices = Choice.objects.filter(question=question)
 
         return render(
