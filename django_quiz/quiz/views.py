@@ -29,7 +29,7 @@ class QuizView(View):
 class QuizQuestionView(View):
     def get(self, request, quiz_title: str, question_id: int):
         quiz = Quiz.objects.get(url_title=quiz_title)
-        question = Question.objects.filter(quiz=quiz)[question_id]
+        question = Question.objects.filter(quiz=quiz)[question_id - 1]
         choices = Choice.objects.filter(question=question)
 
         return render(
@@ -42,3 +42,24 @@ class QuizQuestionView(View):
                 'question_id': question_id,
             },
         )
+
+    def post(self, request, quiz_title: str, question_id: int):
+        choice = Choice.objects.get(
+            pk=int(request.POST.get('choice'))
+        )
+        session = request.session.session_key
+
+        UserAnswer.objects.create(
+            choice=choice,
+            session=session,
+        )
+
+        return redirect(reverse(
+            viewname='quiz:question',
+            args=(quiz_title, question_id + 1)
+        ))
+
+
+class QuizResultView(View):
+    def get(self, request, quiz_title: str):
+        ...
