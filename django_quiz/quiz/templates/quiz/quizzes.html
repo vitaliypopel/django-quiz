@@ -1,0 +1,19 @@
+{% extends 'quiz/base.html' %}
+
+{% block title %}
+    Quizzes
+{% endblock %}
+
+{% block context %}
+    <h2 class="text-center mt-3 mb-3">Quizzes</h2>
+    {% for quiz in quizzes %}
+        <div class="card">
+            <div class="card-header">{{ quiz }}</div>
+            <div class="card-body">
+                <h5 class="card-title">Quiz: "{{ quiz }}"</h5>
+                <p class="card-text">Descriptions: {{ quiz.descriptions|truncatewords:50 }}...</p>
+                <a href="{% url 'quiz:quiz' quiz.url_title %}" class="btn btn-success">Open</a>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

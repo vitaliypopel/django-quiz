@@ -1,0 +1,32 @@
+{% extends 'quiz/base.html' %}
+
+{% block title %}
+    {{ quiz }} #{{ question_id }}
+{% endblock %}
+
+{% block context %}
+    <h2 class="text-center mt-3 mb-3">{{ quiz }}</h2>
+    <h4 class="text-center mt-4 mb-3">{{ question }}</h4>
+    <form method="POST">
+        {% csrf_token %}
+        {% for choice in choices %}
+<!--            <div class="form-check">-->
+<!--                <input class="form-check-input" type="radio" name="choice" id="{{ choice.pk }}" required>-->
+<!--                <label class="form-check-label fs-5" for="{{ choice.pk }}">-->
+<!--                    {{ choice }}-->
+<!--                </label>-->
+<!--            </div>-->
+            <div class="input-group mt-3 mb-3">
+                <div class="input-group-text">
+                    <input class="form-check-input" type="radio" name="choice" id="{{ choice.pk }}" required>
+                </div>
+                <label class="form-control fs-5" for="{{ choice.pk }}">
+                    {{ choice }}
+                </label>
+            </div>
+        {% endfor %}
+        <div class="text-center">
+            <input class="btn btn-success mt-3 fs-5 center-block" type="submit" value="Answer">
+        </div>
+    </form>
+{% endblock %}
