@@ -71,11 +71,11 @@ class QuizQuestionView(View):
 class QuizResultView(View):
     def get(self, request, quiz_title: str):
         quiz = get_object_or_404(Quiz, url_title=quiz_title)
-        user_answers = get_list_or_404(
-            UserAnswer,
+        user_answers = UserAnswer.objects.filter(
             quiz=quiz,
-            session=request.session.session_key
+            session=request.session.session_key,
         )
+        rating = user_answers.filter(is_correct=True).count()
 
         return render(
             request,
@@ -83,5 +83,6 @@ class QuizResultView(View):
             context={
                 'quiz': quiz,
                 'user_answers': user_answers,
+                'rating': rating,
             },
         )

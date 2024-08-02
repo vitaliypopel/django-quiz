@@ -7,15 +7,25 @@
 {% block context %}
     <h2 class="text-center mt-3 mb-3">{{ quiz }} result</h2>
     {% for user_answer in user_answers %}
-        <p class="text-center fs-5">
-            Question #{{ user_answer.question.number }} <b>{{ user_answer.question.text }}</b>:
-            <i>
-                {% if user_answer.is_correct %}
-                    Correct
-                {% else %}
-                    Incorrect
-                {% endif %}
-            </i>
-        </p>
+        <h4>
+            #{{ user_answer.question.number }}
+            <b>{{ user_answer.question.text }}</b>
+            <span class="fs-5">
+                (<i><u>{% if user_answer.is_correct %}Correct{% else %}Incorrect{% endif %}</u></i>)
+            </span>:
+        </h4>
+        <ol>
+            {% for choice in user_answer.question.choice_set.all %}
+                <li class="fs-5">
+                    <span class="text-{% if choice.is_correct %}success{% else %}danger{% endif %}">
+                        {{ choice }}
+                    </span>
+                    {% if choice.pk == user_answer.choice.pk %}
+                        <i class="text-secondary">- your answer</i>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ol>
     {% endfor %}
+    <p class="fs-5">Your rating: <u>{{ rating }}/{{ user_answers|length }}</u></p>
 {% endblock %}
