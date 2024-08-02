@@ -5,5 +5,17 @@
 {% endblock %}
 
 {% block context %}
-    <p>Coming soon..</p>
+    <h2 class="text-center mt-3 mb-3">{{ quiz }} result</h2>
+    {% for user_answer in user_answers %}
+        <p class="text-center fs-5">
+            Question #{{ user_answer.question.number }} <b>{{ user_answer.question.text }}</b>:
+            <i>
+                {% if user_answer.is_correct %}
+                    Correct
+                {% else %}
+                    Not correct
+                {% endif %}
+            </i>
+        </p>
+    {% endfor %}
 {% endblock %}

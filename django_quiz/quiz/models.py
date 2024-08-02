@@ -39,7 +39,10 @@ class Choice(models.Model):
 
 
 class UserAnswer(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
+    is_correct = models.BooleanField()
     session = models.CharField(max_length=300)
 
     class Meta:
