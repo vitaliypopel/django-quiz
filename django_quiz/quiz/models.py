@@ -16,6 +16,7 @@ class Quiz(models.Model):
 
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    number = models.IntegerField()
     text = models.CharField(max_length=300)
 
     class Meta:
