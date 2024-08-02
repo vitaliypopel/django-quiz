@@ -7,6 +7,7 @@
 {% block context %}
     <h2 class="text-center mt-3 mb-3">{{ quiz }}</h2>
     <p class="text-center fs-5">Descriptions: {{ quiz.descriptions }}</p>
+    <p class="text-center fs-5">Questions: {{ quiz.question_set.all|length }}</p>
     <div class="text-center">
         <a class="btn btn-success fs-5"
            href="{% url 'quiz:question' quiz.url_title 1 %}">Take the quiz</a>

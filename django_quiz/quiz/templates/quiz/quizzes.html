@@ -11,7 +11,8 @@
             <div class="card-header">{{ quiz }}</div>
             <div class="card-body">
                 <h5 class="card-title">Quiz: "{{ quiz }}"</h5>
-                <p class="card-text">Descriptions: {{ quiz.descriptions|truncatewords:50 }}...</p>
+                <p class="card-text mb-0">Descriptions: {{ quiz.descriptions|truncatewords:50 }}...</p>
+                <p class="card-text">Questions: {{ quiz.question_set.all|length }}</p>
                 <a href="{% url 'quiz:quiz' quiz.url_title %}" class="btn btn-success">Open</a>
             </div>
         </div>

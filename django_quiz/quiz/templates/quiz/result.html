@@ -14,7 +14,7 @@
                 (<i><u>{% if user_answer.is_correct %}Correct{% else %}Incorrect{% endif %}</u></i>)
             </span>:
         </h4>
-        <ol>
+        <ul>
             {% for choice in user_answer.question.choice_set.all %}
                 <li class="fs-5">
                     <span class="text-{% if choice.is_correct %}success{% else %}danger{% endif %}">
@@ -25,7 +25,7 @@
                     {% endif %}
                 </li>
             {% endfor %}
-        </ol>
+        </ul>
     {% endfor %}
     <p class="fs-5">Your rating: <u>{{ rating }}/{{ user_answers|length }}</u></p>
 {% endblock %}

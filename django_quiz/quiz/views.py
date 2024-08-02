@@ -1,27 +1,24 @@
-from django.shortcuts import render, redirect, reverse, get_object_or_404, get_list_or_404
-from django.views.generic import View
+from django.shortcuts import render, redirect, reverse, get_object_or_404
+from django.views.generic import View, ListView, DetailView
 
 from .models import Quiz, Question, Choice, UserAnswer
+from .utils import get_session
 
 
-class QuizzesView(View):
-    def get(self, request):
-        quizzes = Quiz.objects.all()
-        return render(
-            request,
-            template_name='quiz/quizzes.html',
-            context={'quizzes': quizzes},
-        )
+class QuizzesView(ListView):
+    template_name = 'quiz/quizzes.html'
+    model = Quiz
+    context_object_name = 'quizzes'
 
 
-class QuizView(View):
-    def get(self, request, quiz_title: str):
-        quiz = get_object_or_404(Quiz, url_title=quiz_title)
-        return render(
-            request,
-            template_name='quiz/quiz.html',
-            context={'quiz': quiz},
-        )
+class QuizView(DetailView):
+    template_name = 'quiz/quiz.html'
+    model = Quiz
+    context_object_name = 'quiz'
+
+    def get_object(self):
+        url_title = self.kwargs['quiz_title']
+        return get_object_or_404(self.model, url_title=url_title)
 
 
 class QuizQuestionView(View):
@@ -40,7 +37,7 @@ class QuizQuestionView(View):
 
     def post(self, request, quiz_title: str, question_id: int):
         choice_id = int(request.POST.get('choice'))
-        session = request.session.session_key
+        session = get_session(request)
         next_question_id = question_id + 1
 
         quiz = get_object_or_404(Quiz, url_title=quiz_title)
@@ -73,7 +70,7 @@ class QuizResultView(View):
         quiz = get_object_or_404(Quiz, url_title=quiz_title)
         user_answers = UserAnswer.objects.filter(
             quiz=quiz,
-            session=request.session.session_key,
+            session=get_session(request),
         )
         rating = user_answers.filter(is_correct=True).count()
 
@@ -85,4 +82,14 @@ class QuizResultView(View):
                 'user_answers': user_answers,
                 'rating': rating,
             },
+        )
+
+
+class Dashboard(View):
+    def get(self, request):
+        session = get_session(request)
+        return render(
+            request,
+            template_name='quiz/base.html',
+            context={},
         )
