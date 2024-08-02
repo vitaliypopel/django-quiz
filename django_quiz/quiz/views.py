@@ -90,6 +90,6 @@ class Dashboard(View):
         session = get_session(request)
         return render(
             request,
-            template_name='quiz/base.html',
-            context={},
+            template_name='quiz/dashboard.html',
+            context={'session': session},
         )
