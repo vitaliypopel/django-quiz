@@ -6,7 +6,9 @@ m = (
     models.Quiz,
     models.Question,
     models.Choice,
-    models.UserAnswer,
+    models.UserSession,
+    models.Answer,
+    models.CompletedQuiz,
 )
 
 for model in m:

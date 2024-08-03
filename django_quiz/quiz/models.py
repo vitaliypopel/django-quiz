@@ -8,6 +8,7 @@ class Quiz(models.Model):
     created_at = models.DateTimeField(auto_now=True)
 
     class Meta:
+        verbose_name_plural = 'Quizzes'
         db_table = 'quizzes'
 
     def __str__(self):
@@ -38,12 +39,32 @@ class Choice(models.Model):
         return self.text
 
 
-class UserAnswer(models.Model):
+class UserSession(models.Model):
+    session = models.CharField(max_length=300)
+
+    class Meta:
+        db_table = 'users_session'
+
+    def __str__(self):
+        return self.session
+
+
+class Answer(models.Model):
+    user_session = models.ForeignKey(UserSession, on_delete=models.CASCADE)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
     is_correct = models.BooleanField()
-    session = models.CharField(max_length=300)
 
     class Meta:
         db_table = 'user_answers'
+
+
+class CompletedQuiz(models.Model):
+    user_session = models.ForeignKey(UserSession, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    is_completed = models.BooleanField()
+
+    class Meta:
+        verbose_name_plural = 'Completed quizzes'
+        db_table = 'user_completed_quizzes'
