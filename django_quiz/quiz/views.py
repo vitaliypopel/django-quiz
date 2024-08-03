@@ -89,7 +89,7 @@ class QuizResultView(View):
         )
 
 
-class Dashboard(View):
+class DashboardView(View):
     def get(self, request):
         user_session = get_user_session(request)
         return render(
