@@ -19,6 +19,7 @@ class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     number = models.IntegerField()
     text = models.CharField(max_length=300)
+    is_last = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'questions'
@@ -30,7 +31,7 @@ class Question(models.Model):
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     text = models.CharField(max_length=300)
-    is_correct = models.BooleanField()
+    is_correct = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'choices'
@@ -54,7 +55,7 @@ class Answer(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
-    is_correct = models.BooleanField()
+    is_correct = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'user_answers'
@@ -63,7 +64,7 @@ class Answer(models.Model):
 class CompletedQuiz(models.Model):
     user_session = models.ForeignKey(UserSession, on_delete=models.CASCADE)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    is_completed = models.BooleanField()
+    is_completed = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = 'Completed quizzes'

@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from . import models
 
-m = (
+quiz_models = (
     models.Quiz,
     models.Question,
     models.Choice,
@@ -11,5 +11,5 @@ m = (
     models.CompletedQuiz,
 )
 
-for model in m:
+for model in quiz_models:
     admin.site.register(model)
