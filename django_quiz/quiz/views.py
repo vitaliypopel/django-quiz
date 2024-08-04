@@ -33,19 +33,94 @@ class QuizView(DetailView):
 @method_decorator(require_GET, name='dispatch')
 class QuizQuestionView(View):
     def get(self, request, quiz_title: str, question_id: int):
-        ...
+        quiz = get_object_or_404(Quiz, url_title=quiz_title)
+        question = get_object_or_404(Question, quiz=quiz, number=question_id)
+
+        completed_quiz = CompletedQuiz.objects.filter(
+            user_session=get_user_session(request),
+            quiz=quiz,
+            is_completed=True,
+        )
+        if completed_quiz.exists():
+            return redirect(reverse(
+                viewname='quiz:result',
+                args=(quiz_title,),
+            ))
+
+        answers = Answer.objects.filter(
+            user_session=get_user_session(request),
+            quiz=quiz,
+            question=question,
+        )
+        if answers.exists():
+            return redirect(reverse(
+                viewname='quiz:question',
+                args=(quiz_title, question_id + 1),
+            ))
+
+        return render(
+            request,
+            template_name='quiz/question.html',
+            context={
+                'quiz': quiz,
+                'question': question,
+            },
+        )
 
 
 @method_decorator(require_POST, name='dispatch')
-class QuizQuestionChoiceView(View):
-    def post(self, request, quiz_title: str, question_id: int, choice_id: int):
-        ...
+class QuizQuestionAnswerView(View):
+    def post(self, request, quiz_title: str, question_id: int):
+        user_session = get_user_session(request)
+
+        quiz = get_object_or_404(Quiz, url_title=quiz_title)
+        question = get_object_or_404(Question, quiz=quiz, number=question_id)
+
+        choice_id = int(request.POST.get('choice'))
+        choice = get_object_or_404(Choice, pk=choice_id)
+
+        Answer.objects.create(
+            user_session=user_session,
+            quiz=quiz,
+            question=question,
+            choice=choice,
+            is_correct=choice.is_correct,
+        )
+
+        if question.is_last:
+            CompletedQuiz.objects.create(
+                user_session=user_session,
+                quiz=quiz,
+                is_completed=True,
+            )
+            return redirect(reverse(
+                viewname='quiz:result',
+                args=(quiz_title,),
+            ))
+
+        return redirect(reverse(
+            viewname='quiz:question',
+            args=(quiz_title, question_id + 1),
+        ))
 
 
 @method_decorator(require_GET, name='dispatch')
 class QuizResultView(View):
     def get(self, request, quiz_title: str):
+        user_session = get_user_session(request)
         quiz = get_object_or_404(Quiz, url_title=quiz_title)
+
+        completed_quiz = CompletedQuiz.objects.filter(
+            user_session=user_session,
+            quiz=quiz,
+            is_completed=True,
+        )
+        if not completed_quiz.exists():
+            return redirect(reverse(
+                viewname='quiz:question',
+                args=(quiz_title, 1),
+            ))
+
         answers = Answer.objects.filter(
             user_session=get_user_session(request),
             quiz=quiz,

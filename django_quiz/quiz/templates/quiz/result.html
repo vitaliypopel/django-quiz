@@ -8,7 +8,7 @@
     <h2 class="text-center mt-3 mb-3">{{ quiz }} result</h2>
     {% for answer in answers %}
         <h4>
-            #{{ answer.question.number }}
+            {{ answer.question.number }}).
             <b>{{ answer.question.text }}</b>
         </h4>
         <ul>
