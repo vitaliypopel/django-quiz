@@ -64,6 +64,7 @@ class Answer(models.Model):
 class CompletedQuiz(models.Model):
     user_session = models.ForeignKey(UserSession, on_delete=models.CASCADE)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    result = models.IntegerField(default=0)
     is_completed = models.BooleanField(default=False)
 
     class Meta:

@@ -1,11 +1,11 @@
 {% extends 'quiz/base.html' %}
 
 {% block title %}
-    {{ quiz }} result
+    {{ completed_quiz.quiz }} result
 {% endblock %}
 
 {% block context %}
-    <h2 class="text-center mt-3 mb-3">{{ quiz }} result</h2>
+    <h2 class="text-center mt-3 mb-3">{{ completed_quiz.quiz }} result</h2>
     {% for answer in answers %}
         <h4>
             {{ answer.question.number }}).
@@ -25,5 +25,5 @@
             {% endfor %}
         </ul>
     {% endfor %}
-    <p class="fs-5">Your rating: <u>{{ rating }}/{{ answers|length }}</u></p>
+    <p class="fs-5">Your rating: <u>{{ completed_quiz.result }}/{{ answers|length }}</u></p>
 {% endblock %}
