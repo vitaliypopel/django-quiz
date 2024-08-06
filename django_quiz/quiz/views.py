@@ -96,18 +96,18 @@ class QuizQuestionAnswerView(View):
         )
 
         if question.is_last:
-            result = Answer.objects.filter(
+            completed_quiz = CompletedQuiz.objects.filter(
                 user_session=user_session,
                 quiz=quiz,
-                is_correct=True
+            ).first()
+
+            completed_quiz.is_completed = True
+            completed_quiz.result = Answer.objects.filter(
+                user_session=user_session,
+                quiz=quiz,
+                is_correct=True,
             ).count()
 
-            CompletedQuiz.objects.create(
-                user_session=user_session,
-                quiz=quiz,
-                result=result,
-                is_completed=True,
-            )
             return redirect(reverse(
                 viewname='quiz:result',
                 args=(quiz_title,),
@@ -156,7 +156,8 @@ class DashboardView(View):
     def get(self, request):
         user_session = get_user_session(request)
         completed_quizzes = CompletedQuiz.objects.filter(
-            user_session=user_session
+            user_session=user_session,
+            is_completed=True,
         )
         return render(
             request,
