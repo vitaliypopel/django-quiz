@@ -46,6 +46,12 @@ class QuizQuestionView(View):
             completed_quiz = completed_quiz.first()
             if question.is_last:
                 completed_quiz.is_completed = True
+                completed_quiz.result = Answer.objects.filter(
+                    user_session=user_session,
+                    quiz=quiz,
+                    is_correct=True,
+                ).count()
+
                 completed_quiz.save()
 
             if completed_quiz.is_completed:
