@@ -7,9 +7,17 @@ class UserSessionMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        if not get_user_session(request):
-            UserSession.objects.create(
-                session=get_user_session_hash(request),
-            )
+        user_session = request.COOKIES.get('user_session', False)
 
-        return self.get_response(request)
+        if not user_session:
+            if not get_user_session(request):
+                UserSession.objects.create(
+                    session=get_user_session_hash(request),
+                )
+
+        response = self.get_response(request)
+
+        if not user_session:
+            response.set_cookie('user_session', True, max_age=315360000)
+
+        return response

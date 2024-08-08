@@ -19,11 +19,17 @@
                     </span>
                     {% if choice.pk == answer.choice.pk %}
                         <i class="text-secondary">- your answer</i>
-                        <u>{% if answer.is_correct %}Correct{% else %}Incorrect{% endif %}</u>
+                        {% if answer.is_correct %}
+                            <u class="text-success">Correct</u>
+                        {% else %}
+                            <u class="text-danger">Incorrect</u>
+                        {% endif %}
                     {% endif %}
                 </li>
             {% endfor %}
         </ul>
     {% endfor %}
-    <p class="fs-5">Your rating: <u>{{ completed_quiz.result }}/{{ answers|length }}</u></p>
+
+    <hr>
+    <h4>Your result: <u>{{ completed_quiz.result }}/{{ answers|length }}</u></h4>
 {% endblock %}
