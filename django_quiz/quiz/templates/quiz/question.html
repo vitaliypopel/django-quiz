@@ -7,7 +7,7 @@
 {% block context %}
     <h2 class="text-center mt-3 mb-3">{{ quiz }}</h2>
     <h4 class="text-center mt-4 mb-3">{{ question }}</h4>
-    <form action="{% url 'quiz:answer' quiz.url_title question.pk %}" method="POST">
+    <form action="{% url 'quiz:answer' quiz.url_title question.number %}" method="POST">
         {% csrf_token %}
         {% for choice in question.choice_set.all %}
             <div class="input-group mt-3 mb-3">
