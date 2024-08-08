@@ -4,6 +4,13 @@ from django.db import models
 class Quiz(models.Model):
     title = models.CharField(max_length=100)
     descriptions = models.CharField(max_length=2000)
+    complexity = models.IntegerField(
+        choices=(
+            (1, 'Easy'),
+            (2, 'Medium'),
+            (3, 'Hard'),
+        ),
+    )
     url_title = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now=True)
 

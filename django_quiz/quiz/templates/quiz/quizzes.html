@@ -12,7 +12,17 @@
             <div class="card-body">
                 <h5 class="card-title">Quiz: "{{ quiz }}"</h5>
                 <p class="card-text mb-0">Descriptions: {{ quiz.descriptions|truncatewords:50 }}...</p>
-                <p class="card-text">Questions: {{ quiz.question_set.all|length }}</p>
+                <p class="card-text mb-0">Questions: {{ quiz.question_set.all|length }}</p>
+                <p class="card-text">
+                    Complexity: <span class="
+                    {% if quiz.complexity == 1 %}
+                        text-success-emphasis
+                    {% elif quiz.complexity == 2 %}
+                        text-warning-emphasis
+                    {% elif quiz.complexity == 3 %}
+                        text-danger-emphasis
+                    {% endif %}">{{ quiz.get_complexity_display }}</span>
+                </p>
                 <a href="{% url 'quiz:quiz' quiz.url_title %}" class="btn btn-success">Open</a>
             </div>
         </div>

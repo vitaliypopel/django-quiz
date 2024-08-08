@@ -20,16 +20,15 @@
                     {% if choice.pk == answer.choice.pk %}
                         <i class="text-secondary">- your answer</i>
                         {% if answer.is_correct %}
-                            <u class="text-success">Correct</u>
+                            <u class="text-success-emphasis">Correct</u>
                         {% else %}
-                            <u class="text-danger">Incorrect</u>
+                            <u class="text-warning-emphasis">Incorrect</u>
                         {% endif %}
                     {% endif %}
                 </li>
             {% endfor %}
         </ul>
     {% endfor %}
-
     <hr>
     <h4>Your result: <u>{{ completed_quiz.result }}/{{ answers|length }}</u></h4>
 {% endblock %}

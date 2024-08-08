@@ -43,18 +43,7 @@ class QuizQuestionView(View):
             quiz=quiz,
         )
         if completed_quiz.exists():
-            completed_quiz = completed_quiz.first()
-            if question.is_last:
-                completed_quiz.is_completed = True
-                completed_quiz.result = Answer.objects.filter(
-                    user_session=user_session,
-                    quiz=quiz,
-                    is_correct=True,
-                ).count()
-
-                completed_quiz.save()
-
-            if completed_quiz.is_completed:
+            if completed_quiz.first().is_completed:
                 return redirect(reverse(
                     viewname='quiz:result',
                     args=(quiz_title,),
