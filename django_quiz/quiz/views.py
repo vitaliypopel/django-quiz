@@ -152,8 +152,9 @@ class QuizCompleteView(View):
             quiz=quiz,
             is_correct=True,
         ).count()
-
         completed_quiz.is_completed = True
+
+        completed_quiz.save()
 
         return redirect(reverse(
             viewname='quiz:result',
