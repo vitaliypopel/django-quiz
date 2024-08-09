@@ -7,7 +7,12 @@
 {% block context %}
     <h2 class="text-center mt-3 mb-3">{{ quiz }}</h2>
     <h4 class="text-center mt-4 mb-3">{{ question }}</h4>
-    <form action="{% url 'quiz:answer' quiz.url_title question.number %}" method="POST">
+    <form action="
+        {% if question.is_last%}
+            {% url 'quiz:complete' quiz.url_title question.number %}
+        {% else %}
+            {% url 'quiz:answer' quiz.url_title question.number %}
+        {% endif %}" method="POST">
         {% csrf_token %}
         {% for choice in question.choice_set.all %}
             <div class="input-group mt-3 mb-3">
@@ -21,7 +26,8 @@
             </div>
         {% endfor %}
         <div class="text-center">
-            <input class="btn btn-success mt-3 fs-5 center-block" type="submit" value="Answer">
+            <input class="btn btn-success mt-3 fs-5 center-block" type="submit"
+                   value="{% if question.is_last%}Complete quiz{% else %}Answer{% endif %}">
         </div>
     </form>
 {% endblock %}

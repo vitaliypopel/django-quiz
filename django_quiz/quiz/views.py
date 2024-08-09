@@ -41,38 +41,45 @@ class QuizQuestionView(View):
         completed_quiz = CompletedQuiz.objects.filter(
             user_session=user_session,
             quiz=quiz,
+            is_completed=True,
         )
         if completed_quiz.exists():
-            if completed_quiz.first().is_completed:
-                return redirect(reverse(
-                    viewname='quiz:result',
-                    args=(quiz_title,),
-                ))
-        else:
-            CompletedQuiz.objects.create(
-                user_session=user_session,
-                quiz=quiz,
-                is_completed=False,
-            )
+            return redirect(reverse(
+                viewname='quiz:result',
+                args=(quiz_title,),
+            ))
 
-        if Answer.objects.filter(quiz=quiz, question=question).exists():
+        if question_id > 1:
+            previous_questions = Question.objects.filter(
+                quiz=quiz,
+            )[:question_id - 1][::-1]
+
+            for (
+                    previous_question_id,
+                    previous_question
+            ) in enumerate(previous_questions, start=question_id - 1):
+                answer = Answer.objects.filter(
+                    user_session=user_session,
+                    quiz=quiz,
+                    question=previous_question,
+                )
+
+                if not answer.exists():
+                    return redirect(reverse(
+                        viewname='quiz:question',
+                        args=(quiz_title, previous_question_id),
+                    ))
+
+        answer = Answer.objects.filter(
+            user_session=user_session,
+            quiz=quiz,
+            question=question,
+        )
+        if answer.exists() and not question.is_last:
             return redirect(reverse(
                 viewname='quiz:question',
                 args=(quiz_title, question_id + 1),
             ))
-
-        if question_id != 1:
-            previous_question_id = question_id - 1
-            answers = Answer.objects.filter(
-                user_session=user_session,
-                quiz=quiz,
-                question=Question.objects.get(quiz=quiz, number=previous_question_id),
-            )
-            if not answers.exists():
-                return redirect(reverse(
-                    viewname='quiz:question',
-                    args=(quiz_title, previous_question_id),
-                ))
 
         return render(
             request,
@@ -85,7 +92,7 @@ class QuizQuestionView(View):
 
 
 @method_decorator(require_POST, name='dispatch')
-class QuizQuestionAnswerView(View):
+class QuizAnswerView(View):
     def post(self, request, quiz_title: str, question_id: int):
         user_session = get_user_session(request)
 
@@ -103,29 +110,45 @@ class QuizQuestionAnswerView(View):
             is_correct=choice.is_correct,
         )
 
-        if question.is_last:
-            completed_quiz = CompletedQuiz.objects.filter(
-                user_session=user_session,
-                quiz=quiz,
-            ).first()
-
-            completed_quiz.is_completed = True
-            completed_quiz.result = Answer.objects.filter(
-                user_session=user_session,
-                quiz=quiz,
-                is_correct=True,
-            ).count()
-
-            completed_quiz.save()
-
-            return redirect(reverse(
-                viewname='quiz:result',
-                args=(quiz_title,),
-            ))
-
         return redirect(reverse(
             viewname='quiz:question',
             args=(quiz_title, question_id + 1),
+        ))
+
+
+@method_decorator(require_POST, name='dispatch')
+class QuizCompleteView(View):
+    def post(self, request, quiz_title: str, question_id: int):
+        user_session = get_user_session(request)
+
+        quiz = get_object_or_404(Quiz, url_title=quiz_title)
+        question = get_object_or_404(Question, quiz=quiz, number=question_id)
+
+        choice_id = int(request.POST.get('choice'))
+        choice = get_object_or_404(Choice, pk=choice_id)
+
+        Answer.objects.create(
+            user_session=user_session,
+            quiz=quiz,
+            question=question,
+            choice=choice,
+            is_correct=choice.is_correct,
+        )
+
+        CompletedQuiz.objects.create(
+            user_session=user_session,
+            quiz=quiz,
+            result=Answer.objects.filter(
+                user_session=user_session,
+                quiz=quiz,
+                is_correct=True,
+            ).count(),
+            is_completed=True,
+        )
+
+        return redirect(reverse(
+            viewname='quiz:result',
+            args=(quiz_title,),
         ))
 
 
