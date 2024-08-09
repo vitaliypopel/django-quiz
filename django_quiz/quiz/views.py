@@ -41,13 +41,19 @@ class QuizQuestionView(View):
         completed_quiz = CompletedQuiz.objects.filter(
             user_session=user_session,
             quiz=quiz,
-            is_completed=True,
         )
         if completed_quiz.exists():
-            return redirect(reverse(
-                viewname='quiz:result',
-                args=(quiz_title,),
-            ))
+            if completed_quiz.first().is_completed:
+                return redirect(reverse(
+                    viewname='quiz:result',
+                    args=(quiz_title,),
+                ))
+        else:
+            CompletedQuiz.objects.create(
+                user_session=user_session,
+                quiz=quiz,
+                is_completed=False,
+            )
 
         if question_id > 1:
             previous_questions = Question.objects.filter(
@@ -135,16 +141,19 @@ class QuizCompleteView(View):
             is_correct=choice.is_correct,
         )
 
-        CompletedQuiz.objects.create(
+        completed_quiz = get_object_or_404(
+            CompletedQuiz,
+            user_session=user_session,
+            quiz=quiz
+        )
+
+        completed_quiz.result = Answer.objects.filter(
             user_session=user_session,
             quiz=quiz,
-            result=Answer.objects.filter(
-                user_session=user_session,
-                quiz=quiz,
-                is_correct=True,
-            ).count(),
-            is_completed=True,
-        )
+            is_correct=True,
+        ).count()
+
+        completed_quiz.is_completed = True
 
         return redirect(reverse(
             viewname='quiz:result',
