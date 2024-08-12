@@ -21,4 +21,6 @@ urlpatterns = [
          views.QuizCompleteView.as_view(), name='complete'),
     path('quizzes/<slug:quiz_title>/result/',
          views.QuizResultView.as_view(), name='result'),
+    path('quizzes/<slug:quiz_title>/again/',
+         views.QuizTakeAgainView.as_view(), name='again'),
 ]

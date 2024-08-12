@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_GET, require_POST
@@ -159,6 +160,33 @@ class QuizCompleteView(View):
         return redirect(reverse(
             viewname='quiz:result',
             args=(quiz_title,),
+        ))
+
+
+@method_decorator(require_POST, name='dispatch')
+class QuizTakeAgainView(View):
+    def post(self, request, quiz_title: str):
+        user_session = get_user_session(request)
+        quiz = get_object_or_404(Quiz, url_title=quiz_title)
+
+        answers = Answer.objects.filter(
+            user_session=user_session,
+            quiz=quiz,
+        )
+        completed_quiz = CompletedQuiz.objects.get(
+            user_session=user_session,
+            quiz=quiz,
+        )
+
+        with transaction.atomic():
+            answers.delete()
+            completed_quiz.result = 0
+            completed_quiz.is_completed = False
+            completed_quiz.save()
+
+        return redirect(reverse(
+            viewname='quiz:question',
+            args=(quiz_title, 1),
         ))
 
 
