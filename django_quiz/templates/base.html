@@ -24,11 +24,29 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav ms-auto">
-                            <li class="navbar-item">
-                                {% url 'quiz:dashboard' as dashboard_url %}
-                                <a class="nav-link {% if request.path == dashboard_url %}active{% endif %}"
-                                   href="{{ dashboard_url }}">Dashboard</a>
-                            </li>
+                            {% if request.user.is_authenticated %}
+                                <li class="navbar-item">
+                                    {% url 'quiz:dashboard' as dashboard_url %}
+                                    <a class="nav-link {% if request.path == dashboard_url %}active{% endif %}"
+                                       href="{{ dashboard_url }}">Dashboard</a>
+                                </li>
+                                <li class="navbar-item">
+                                    {% url 'authentication:logout' as logout_url %}
+                                    <a class="nav-link {% if request.path == logout_url %}active{% endif %}"
+                                       href="{{ logout_url }}">Logout</a>
+                                </li>
+                            {% else %}
+                                <li class="navbar-item">
+                                    {% url 'authentication:registration' as registration_url %}
+                                    <a class="nav-link {% if request.path == registration_url %}active{% endif %}"
+                                       href="{{ registration_url }}">Registration</a>
+                                </li>
+                                <li class="navbar-item">
+                                    {% url 'authentication:login' as login_url %}
+                                    <a class="nav-link {% if request.path == login_url %}active{% endif %}"
+                                       href="{{ login_url }}">Login</a>
+                                </li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>
