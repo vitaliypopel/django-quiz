@@ -6,7 +6,6 @@ quiz_models = (
     models.Quiz,
     models.Question,
     models.Choice,
-    models.UserSession,
     models.Answer,
     models.CompletedQuiz,
 )

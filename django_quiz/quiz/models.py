@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Quiz(models.Model):
@@ -47,18 +48,8 @@ class Choice(models.Model):
         return self.text
 
 
-class UserSession(models.Model):
-    session = models.CharField(max_length=300)
-
-    class Meta:
-        db_table = 'users_session'
-
-    def __str__(self):
-        return self.session
-
-
 class Answer(models.Model):
-    user_session = models.ForeignKey(UserSession, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
@@ -69,7 +60,7 @@ class Answer(models.Model):
 
 
 class CompletedQuiz(models.Model):
-    user_session = models.ForeignKey(UserSession, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     result = models.IntegerField(default=0)
     is_completed = models.BooleanField(default=False)

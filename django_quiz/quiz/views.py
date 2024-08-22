@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.utils.decorators import method_decorator
@@ -5,7 +6,6 @@ from django.views.decorators.http import require_GET, require_POST
 from django.views.generic import View, ListView, DetailView, RedirectView
 
 from .models import Quiz, Question, Choice, Answer, CompletedQuiz
-from .utils import get_user_session
 
 
 @method_decorator(require_GET, name='dispatch')
@@ -31,16 +31,16 @@ class QuizView(DetailView):
         return get_object_or_404(self.model, url_title=self.kwargs['quiz_title'])
 
 
-@method_decorator(require_GET, name='dispatch')
+@method_decorator(decorator=[require_GET, login_required], name='dispatch')
 class QuizQuestionView(View):
     def get(self, request, quiz_title: str, question_id: int):
-        user_session = get_user_session(request)
+        user = request.user
 
         quiz = get_object_or_404(Quiz, url_title=quiz_title)
         question = get_object_or_404(Question, quiz=quiz, number=question_id)
 
         completed_quiz = CompletedQuiz.objects.filter(
-            user_session=user_session,
+            user=user,
             quiz=quiz,
         )
         if completed_quiz.exists():
@@ -51,7 +51,7 @@ class QuizQuestionView(View):
                 ))
         else:
             CompletedQuiz.objects.create(
-                user_session=user_session,
+                user=user,
                 quiz=quiz,
                 is_completed=False,
             )
@@ -66,7 +66,7 @@ class QuizQuestionView(View):
                     previous_question
             ) in enumerate(previous_questions, start=question_id - 1):
                 answer = Answer.objects.filter(
-                    user_session=user_session,
+                    user=user,
                     quiz=quiz,
                     question=previous_question,
                 )
@@ -78,7 +78,7 @@ class QuizQuestionView(View):
                     ))
 
         answer = Answer.objects.filter(
-            user_session=user_session,
+            user=user,
             quiz=quiz,
             question=question,
         )
@@ -98,10 +98,10 @@ class QuizQuestionView(View):
         )
 
 
-@method_decorator(require_POST, name='dispatch')
+@method_decorator(decorator=[require_POST, login_required], name='dispatch')
 class QuizAnswerView(View):
     def post(self, request, quiz_title: str, question_id: int):
-        user_session = get_user_session(request)
+        user = request.user
 
         quiz = get_object_or_404(Quiz, url_title=quiz_title)
         question = get_object_or_404(Question, quiz=quiz, number=question_id)
@@ -110,7 +110,7 @@ class QuizAnswerView(View):
         choice = get_object_or_404(Choice, pk=choice_id)
 
         Answer.objects.create(
-            user_session=user_session,
+            user=user,
             quiz=quiz,
             question=question,
             choice=choice,
@@ -123,10 +123,10 @@ class QuizAnswerView(View):
         ))
 
 
-@method_decorator(require_POST, name='dispatch')
+@method_decorator(decorator=[require_POST, login_required], name='dispatch')
 class QuizCompleteView(View):
     def post(self, request, quiz_title: str, question_id: int):
-        user_session = get_user_session(request)
+        user = request.user
 
         quiz = get_object_or_404(Quiz, url_title=quiz_title)
         question = get_object_or_404(Question, quiz=quiz, number=question_id)
@@ -135,7 +135,7 @@ class QuizCompleteView(View):
         choice = get_object_or_404(Choice, pk=choice_id)
 
         Answer.objects.create(
-            user_session=user_session,
+            user=user,
             quiz=quiz,
             question=question,
             choice=choice,
@@ -144,12 +144,12 @@ class QuizCompleteView(View):
 
         completed_quiz = get_object_or_404(
             CompletedQuiz,
-            user_session=user_session,
+            user=user,
             quiz=quiz
         )
 
         completed_quiz.result = Answer.objects.filter(
-            user_session=user_session,
+            user=user,
             quiz=quiz,
             is_correct=True,
         ).count()
@@ -163,18 +163,18 @@ class QuizCompleteView(View):
         ))
 
 
-@method_decorator(require_POST, name='dispatch')
+@method_decorator(decorator=[require_POST, login_required], name='dispatch')
 class QuizTakeAgainView(View):
     def post(self, request, quiz_title: str):
-        user_session = get_user_session(request)
+        user = request.user
         quiz = get_object_or_404(Quiz, url_title=quiz_title)
 
         answers = Answer.objects.filter(
-            user_session=user_session,
+            user=user,
             quiz=quiz,
         )
         completed_quiz = CompletedQuiz.objects.get(
-            user_session=user_session,
+            user=user,
             quiz=quiz,
         )
 
@@ -190,14 +190,14 @@ class QuizTakeAgainView(View):
         ))
 
 
-@method_decorator(require_GET, name='dispatch')
+@method_decorator(decorator=[require_GET, login_required], name='dispatch')
 class QuizResultView(View):
     def get(self, request, quiz_title: str):
-        user_session = get_user_session(request)
+        user = request.user
         quiz = get_object_or_404(Quiz, url_title=quiz_title)
 
         completed_quiz = CompletedQuiz.objects.filter(
-            user_session=user_session,
+            user=user,
             quiz=quiz,
             is_completed=True,
         )
@@ -208,7 +208,7 @@ class QuizResultView(View):
             ))
 
         answers = Answer.objects.filter(
-            user_session=get_user_session(request),
+            user=user,
             quiz=quiz,
         )
 
@@ -222,19 +222,17 @@ class QuizResultView(View):
         )
 
 
-@method_decorator(require_GET, name='dispatch')
+@method_decorator(decorator=[require_GET, login_required], name='dispatch')
 class DashboardView(View):
     def get(self, request):
-        user_session = get_user_session(request)
         completed_quizzes = CompletedQuiz.objects.filter(
-            user_session=user_session,
+            user=request.user,
             is_completed=True,
         )
         return render(
             request,
             template_name='quiz/dashboard.html',
             context={
-                'user_session': user_session,
                 'completed_quizzes': completed_quizzes,
             },
         )
