@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 
 class Quiz(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     descriptions = models.CharField(max_length=2000)
     complexity = models.IntegerField(
@@ -49,7 +50,7 @@ class Choice(models.Model):
 
 
 class Answer(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
@@ -60,7 +61,7 @@ class Answer(models.Model):
 
 
 class CompletedQuiz(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     result = models.IntegerField(default=0)
     is_completed = models.BooleanField(default=False)
