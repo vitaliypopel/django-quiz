@@ -26,15 +26,29 @@
                         <ul class="navbar-nav ms-auto">
                             {% if request.user.is_authenticated %}
                                 <li class="navbar-item">
-                                    {% url 'quiz:dashboard' as dashboard_url %}
-                                    <a class="nav-link {% if request.path == dashboard_url %}active{% endif %}"
-                                       href="{{ dashboard_url }}">Dashboard</a>
-                                </li>
-                                <li class="navbar-item">
-                                    <form method="POST" action="{% url 'logout' %}">
-                                        {% csrf_token %}
-                                        <input type="submit" class="nav-link" value="Logout">
-                                    </form>
+                                    <div class="dropdown">
+                                        <button class="btn dropdown-toggle text-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            {{ request.user }}
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end mt-2 bg-success border border-light">
+                                            <li>
+                                                {% url 'quiz:dashboard' as dashboard_url %}
+                                                <a class="nav-link {% if request.path == dashboard_url %}active{% endif %}"
+                                                   href="{{ dashboard_url }}">Dashboard</a>
+                                            </li>
+                                            <li>
+                                                {% url 'quiz:settings' as settings_url %}
+                                                <a class="nav-link {% if request.path == settings_url %}active{% endif %}"
+                                                   href="{{ settings_url }}">Settings</a>
+                                            </li>
+                                            <li>
+                                                <form method="POST" action="{% url 'logout' %}">
+                                                    {% csrf_token %}
+                                                    <input type="submit" class="nav-link" value="Logout">
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </li>
                             {% else %}
                                 <li class="navbar-item">

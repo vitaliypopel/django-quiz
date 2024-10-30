@@ -230,3 +230,9 @@ class DashboardView(View):
                 'completed_quizzes': completed_quizzes,
             },
         )
+
+
+@method_decorator(decorator=[], name='dispatch')
+class SettingsView(View):
+    def get(self, request):
+        return render('quiz/settings.html')
