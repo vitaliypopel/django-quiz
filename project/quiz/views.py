@@ -232,7 +232,7 @@ class DashboardView(View):
         )
 
 
-@method_decorator(decorator=[], name='dispatch')
+@method_decorator(decorator=require_GET, name='dispatch')
 class SettingsView(View):
     def get(self, request):
-        return render('quiz/settings.html')
+        return render(request, template_name='quiz/settings.html')
