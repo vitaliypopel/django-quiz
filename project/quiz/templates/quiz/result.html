@@ -4,7 +4,7 @@
     {{ completed_quiz.quiz }} result
 {% endblock %}
 
-{% block context %}
+{% block content %}
     <h2 class="text-center mt-3 mb-3">{{ completed_quiz.quiz }} result</h2>
     <form method="POST" action="{% url 'quiz:again' completed_quiz.quiz.url_title %}"
           class="d-flex justify-content-center">

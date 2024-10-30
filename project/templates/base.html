@@ -31,18 +31,19 @@
                                        href="{{ dashboard_url }}">Dashboard</a>
                                 </li>
                                 <li class="navbar-item">
-                                    {% url 'authentication:logout' as logout_url %}
-                                    <a class="nav-link {% if request.path == logout_url %}active{% endif %}"
-                                       href="{{ logout_url }}">Logout</a>
+                                    <form method="POST" action="{% url 'logout' %}">
+                                        {% csrf_token %}
+                                        <input type="submit" class="nav-link" value="Logout">
+                                    </form>
                                 </li>
                             {% else %}
                                 <li class="navbar-item">
-                                    {% url 'authentication:registration' as registration_url %}
+                                    {% url 'registration' as registration_url %}
                                     <a class="nav-link {% if request.path == registration_url %}active{% endif %}"
                                        href="{{ registration_url }}">Registration</a>
                                 </li>
                                 <li class="navbar-item">
-                                    {% url 'authentication:login' as login_url %}
+                                    {% url 'login' as login_url %}
                                     <a class="nav-link {% if request.path == login_url %}active{% endif %}"
                                        href="{{ login_url }}">Login</a>
                                 </li>
@@ -53,7 +54,7 @@
             </nav>
         </div>
         <div class="container">
-            {% block context %}{% endblock %}
+            {% block content %}{% endblock %}
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

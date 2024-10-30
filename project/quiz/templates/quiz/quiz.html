@@ -4,7 +4,7 @@
     {{ quiz }}
 {% endblock %}
 
-{% block context %}
+{% block content %}
     <h2 class="text-center mt-3 mb-3">{{ quiz }}</h2>
     <p class="text-center fs-5">Descriptions: {{ quiz.descriptions }}</p>
     <p class="text-center fs-5">Questions: {{ quiz.question_set.all|length }}</p>
