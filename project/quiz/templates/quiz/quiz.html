@@ -19,7 +19,7 @@
         {% endif %}">{{ quiz.get_complexity_display }}</span>
     </p>
     <div class="text-center">
-        <a class="btn btn-success fs-5"
+        <a class="btn btn-{{ color_theme }} fs-5"
            href="{% url 'quiz:question' quiz.url_title 1 %}">Take the quiz</a>
     </div>
 {% endblock %}

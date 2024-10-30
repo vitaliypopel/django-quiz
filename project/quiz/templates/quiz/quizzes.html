@@ -23,7 +23,7 @@
                         text-danger-emphasis
                     {% endif %}">{{ quiz.get_complexity_display }}</span>
                 </p>
-                <a href="{% url 'quiz:quiz' quiz.url_title %}" class="btn btn-success">Open</a>
+                <a href="{% url 'quiz:quiz' quiz.url_title %}" class="btn btn-{{ color_theme }}">Open</a>
             </div>
         </div>
     {% endfor %}

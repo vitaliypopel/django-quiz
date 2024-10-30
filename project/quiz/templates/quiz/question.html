@@ -26,7 +26,7 @@
             </div>
         {% endfor %}
         <div class="text-center">
-            <input class="btn btn-success mt-3 fs-5 center-block" type="submit"
+            <input class="btn btn-{{ color_theme }} mt-3 fs-5 center-block" type="submit"
                    value="{% if question.is_last%}Complete quiz{% else %}Answer{% endif %}">
         </div>
     </form>

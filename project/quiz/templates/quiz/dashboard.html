@@ -30,7 +30,7 @@
                     <p class="card-text fs-5">
                         Your result: <u>{{ completed_quiz.result }}/{{ completed_quiz.quiz.answer_set.all|length }}</u>
                     </p>
-                    <a href="{% url 'quiz:result' completed_quiz.quiz.url_title %}" class="btn btn-success">
+                    <a href="{% url 'quiz:result' completed_quiz.quiz.url_title %}" class="btn btn-{{ color_theme }}">
                         Check detail result
                     </a>
                 </div>
@@ -40,5 +40,5 @@
         <p class="fs-5">You have not completed any quizzes</p>
     {% endif %}
     <hr>
-    <a class="btn btn-outline-success fs-5" href="{% url 'quiz:quizzes' %}">Check other quizzes</a>
+    <a class="btn btn-outline-{{ color_theme }} fs-5" href="{% url 'quiz:quizzes' %}">Check other quizzes</a>
 {% endblock %}

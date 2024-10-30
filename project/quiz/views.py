@@ -2,10 +2,11 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.utils.decorators import method_decorator
-from django.views.decorators.http import require_GET, require_POST
-from django.views.generic import View, ListView, DetailView
+from django.views.decorators.http import require_GET, require_POST, require_http_methods
+from django.views.generic import View, DetailView, FormView, ListView
 
 from .models import Quiz, Question, Choice, Answer, CompletedQuiz
+from .forms import UserForm
 
 
 @method_decorator(require_GET, name='dispatch')
@@ -232,7 +233,26 @@ class DashboardView(View):
         )
 
 
-@method_decorator(decorator=require_GET, name='dispatch')
-class SettingsView(View):
+@method_decorator(decorator=[require_http_methods(['GET', 'POST']), login_required], name='dispatch')
+class GeneralSettingsView(View):
+    COLORS = {
+        'green': 'success',
+        'blue': 'primary',
+        'red': 'danger',
+        'yellow': 'warning',
+        'cyan': 'info',
+        'gray': 'secondary',
+    }
+
     def get(self, request):
-        return render(request, template_name='quiz/settings.html')
+        return render(
+            request,
+            template_name='quiz/settings.html',
+            context={'colors': self.COLORS},
+        )
+
+    def post(self, request):
+        response = redirect(reverse('quiz:settings'))
+        color_theme = request.POST.get('color_theme', 'success')
+        response.set_cookie('color_theme', color_theme)
+        return response

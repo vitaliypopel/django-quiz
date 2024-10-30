@@ -16,7 +16,7 @@
     </head>
     <body>
         <div class="navigation">
-            <nav class="navbar navbar-expand-lg bg-success">
+            <nav class="navbar navbar-expand-lg bg-{{ color_theme }}">
                 <div class="container">
                     <a class="navbar-brand" href="{% url 'quiz:quizzes' %}">Quizzes Engine</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -30,7 +30,7 @@
                                         <button class="btn dropdown-toggle text-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             {{ request.user }}
                                         </button>
-                                        <ul class="dropdown-menu dropdown-menu-end mt-2 bg-success border border-light">
+                                        <ul class="dropdown-menu dropdown-menu-end mt-2 bg-{{ color_theme }} border border-light">
                                             {% if request.user.is_staff %}
                                                 <li>
                                                     <a class="nav-link active" href="/admin/">Admin panel <span class="text-warning">★</span></a>
