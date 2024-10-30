@@ -3,10 +3,9 @@ from django.db import transaction
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_GET, require_POST, require_http_methods
-from django.views.generic import View, DetailView, FormView, ListView
+from django.views.generic import View, DetailView, ListView
 
 from .models import Quiz, Question, Choice, Answer, CompletedQuiz
-from .forms import UserForm
 
 
 @method_decorator(require_GET, name='dispatch')
