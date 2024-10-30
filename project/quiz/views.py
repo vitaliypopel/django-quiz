@@ -3,15 +3,9 @@ from django.db import transaction
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_GET, require_POST
-from django.views.generic import View, ListView, DetailView, RedirectView
+from django.views.generic import View, ListView, DetailView
 
 from .models import Quiz, Question, Choice, Answer, CompletedQuiz
-
-
-@method_decorator(require_GET, name='dispatch')
-class HomeView(RedirectView):
-    def get_redirect_url(self, *args, **kwargs):
-        return reverse('quiz:quizzes')
 
 
 @method_decorator(require_GET, name='dispatch')

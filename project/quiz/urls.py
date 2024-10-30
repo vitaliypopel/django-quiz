@@ -1,12 +1,14 @@
 from django.urls import path
 
+from django.shortcuts import redirect, reverse
+
 from . import views
 
 
 app_name = 'quiz'
 urlpatterns = [
     path('',
-         views.HomeView.as_view(), name='home'),
+         lambda request: redirect(reverse('quiz:quizzes')), name='home'),
     path('dashboard/',
          views.DashboardView.as_view(), name='dashboard'),
     path('quizzes/',
