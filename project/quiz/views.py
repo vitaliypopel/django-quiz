@@ -252,6 +252,13 @@ class GeneralSettingsView(View):
 
     def post(self, request):
         response = redirect(reverse('quiz:settings'))
-        color_theme = request.POST.get('color_theme', 'success')
-        response.set_cookie('color_theme', color_theme)
+
+        theme = request.POST.get('theme')
+        if theme is not None:
+            response.set_cookie('theme', theme)
+
+        color_theme = request.POST.get('color_theme')
+        if color_theme is not None:
+            response.set_cookie('color_theme', color_theme)
+
         return response

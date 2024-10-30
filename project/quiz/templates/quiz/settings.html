@@ -7,7 +7,31 @@
 {% block content %}
     <h2 class="text-center mt-3 mb-3">Settings</h2>
 
-    <div class="input-group w-100">
+    <div class="input-group mt-3 mb-3 w-100">
+        <span class="input-group-text border-end-0 bg-transparent flex-grow-1">Change theme</span>
+        <button class="btn border border-start-0 text-end dropdown-toggle" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+            {{ theme|capfirst }}
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end mt-2 w-25">
+            <li>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="theme" value="dark">
+                    <input type="submit" class="dropdown-item" value="Dark">
+                </form>
+            </li>
+            <li>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="theme" value="light">
+                    <input type="submit" class="dropdown-item" value="Light">
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <div class="input-group mt-3 mb-3 w-100">
         <span class="input-group-text border-end-0 bg-transparent flex-grow-1">Change color theme</span>
         <button class="btn btn-outline-{{ color_theme }} border border-start-0 text-end dropdown-toggle" type="button"
                 data-bs-toggle="dropdown" aria-expanded="false">
