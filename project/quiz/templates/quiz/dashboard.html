@@ -28,7 +28,7 @@
                         {% endif %}">{{ completed_quiz.quiz.get_complexity_display }}</span>
                     </p>
                     <p class="card-text fs-5">
-                        Your result: <u>{{ completed_quiz.result }}/{{ completed_quiz.quiz.answer_set.all|length }}</u>
+                        Your result: <u>{{ completed_quiz.result }}/{{ completed_quiz.quiz.question_set.all|length }}</u>
                     </p>
                     <a href="{% url 'quiz:result' completed_quiz.quiz.url_title %}" class="btn btn-{{ color_theme }}">
                         Check detail result
