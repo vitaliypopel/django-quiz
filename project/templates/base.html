@@ -31,7 +31,12 @@
                                             {{ request.user }}
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end mt-2 bg-success border border-light">
-                                            <li>
+                                            {% if request.user.is_staff %}
+                                                <li>
+                                                    <a class="nav-link active" href="/admin/">Admin panel <span class="text-warning">★</span></a>
+                                                </li>
+                                            {% endif %}
+                                            <li class="{% if request.user.is_staff %}border-top border-light{% endif %}">
                                                 {% url 'quiz:dashboard' as dashboard_url %}
                                                 <a class="nav-link {% if request.path == dashboard_url %}active{% endif %}"
                                                    href="{{ dashboard_url }}">Dashboard</a>
