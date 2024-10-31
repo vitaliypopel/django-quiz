@@ -149,28 +149,29 @@ class QuizCompleteView(View):
         choice_id = int(request.POST.get('choice'))
         choice = get_object_or_404(Choice, pk=choice_id)
 
-        Answer.objects.create(
-            user=user,
-            quiz=quiz,
-            question=question,
-            choice=choice,
-            is_correct=choice.is_correct,
-        )
+        with transaction.atomic():
+            Answer.objects.create(
+                user=user,
+                quiz=quiz,
+                question=question,
+                choice=choice,
+                is_correct=choice.is_correct,
+            )
 
-        completed_quiz = get_object_or_404(
-            CompletedQuiz,
-            user=user,
-            quiz=quiz
-        )
+            completed_quiz = get_object_or_404(
+                CompletedQuiz,
+                user=user,
+                quiz=quiz
+            )
 
-        completed_quiz.result = Answer.objects.filter(
-            user=user,
-            quiz=quiz,
-            is_correct=True,
-        ).count()
-        completed_quiz.is_completed = True
+            completed_quiz.result = Answer.objects.filter(
+                user=user,
+                quiz=quiz,
+                is_correct=True,
+            ).count()
+            completed_quiz.is_completed = True
 
-        completed_quiz.save()
+            completed_quiz.save()
 
         return redirect(reverse(
             viewname='quiz:result',
