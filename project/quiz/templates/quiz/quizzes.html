@@ -12,40 +12,40 @@
             Sort by
         </button>
         <ul class="dropdown-menu dropdown-menu-end mt-2 w-25">
-            <li class="dropdown-item">
-                <form method="GET">
-                    <input type="hidden" name="sort_by" value="title">
-                    <input type="submit" class="btn" value="By title: ascending">
-                </form>
-            </li>
-            <li class="dropdown-item">
+            <li class="dropdown-item bg-{{ theme }}">
                 <form method="GET">
                     <input type="hidden" name="sort_by" value="-title">
-                    <input type="submit" class="btn" value="By title: descending">
+                    <input type="submit" class="btn bg-{{ theme }}" value="By title: descending">
                 </form>
             </li>
-            <li class="dropdown-item">
+            <li class="dropdown-item bg-{{ theme }}">
                 <form method="GET">
-                    <input type="hidden" name="sort_by" value="complexity">
-                    <input type="submit" class="btn" value="By complexity: ascending">
+                    <input type="hidden" name="sort_by" value="title">
+                    <input type="submit" class="btn bg-{{ theme }}" value="By title: ascending">
                 </form>
             </li>
-            <li class="dropdown-item">
+            <li class="dropdown-item bg-{{ theme }}">
                 <form method="GET">
                     <input type="hidden" name="sort_by" value="-complexity">
-                    <input type="submit" class="btn" value="By complexity: descending">
+                    <input type="submit" class="btn bg-{{ theme }}" value="By complexity: descending">
                 </form>
             </li>
-            <li class="dropdown-item">
+            <li class="dropdown-item bg-{{ theme }}">
                 <form method="GET">
-                    <input type="hidden" name="sort_by" value="created_at">
-                    <input type="submit" class="btn" value="By date: ascending">
+                    <input type="hidden" name="sort_by" value="complexity">
+                    <input type="submit" class="btn bg-{{ theme }}" value="By complexity: ascending">
                 </form>
             </li>
-            <li class="dropdown-item">
+            <li class="dropdown-item bg-{{ theme }}">
                 <form method="GET">
                     <input type="hidden" name="sort_by" value="-created_at">
-                    <input type="submit" class="btn" value="By date: descending">
+                    <input type="submit" class="btn bg-{{ theme }}" value="By date: descending">
+                </form>
+            </li>
+            <li class="dropdown-item bg-{{ theme }}">
+                <form method="GET">
+                    <input type="hidden" name="sort_by" value="created_at">
+                    <input type="submit" class="btn bg-{{ theme }}" value="By date: ascending">
                 </form>
             </li>
         </ul>
