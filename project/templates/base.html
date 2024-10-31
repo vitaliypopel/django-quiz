@@ -29,6 +29,7 @@
                                     <div class="dropdown">
                                         <button class="btn dropdown-toggle text-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             {{ request.user }}
+                                            {% if request.user.is_staff %}<span class="text-warning">★</span>{% endif %}
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end mt-2 bg-{{ color_theme }} border border-light">
                                             {% if request.user.is_staff %}
