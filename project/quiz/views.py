@@ -2,10 +2,12 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.utils.decorators import method_decorator
+from django.urls import reverse_lazy
 from django.views.decorators.http import require_GET, require_POST, require_http_methods
-from django.views.generic import View, DetailView, ListView
+from django.views.generic import DetailView, FormView, ListView, TemplateView, View
 
 from .models import Quiz, Question, Choice, Answer, CompletedQuiz
+from .forms import UserForm
 
 
 @method_decorator(require_GET, name='dispatch')
@@ -262,3 +264,24 @@ class GeneralSettingsView(View):
             response.set_cookie('color_theme', color_theme)
 
         return response
+
+
+@method_decorator(decorator=[require_http_methods(['GET', 'POST']), login_required], name='dispatch')
+class AccountSettingsView(FormView):
+    form_class = UserForm
+    template_name = 'quiz/account_settings.html'
+    success_url = reverse_lazy('quiz:account_settings')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['instance'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+
+@method_decorator(decorator=[require_GET, login_required], name='dispatch')
+class SecuritySettingsView(TemplateView):
+    template_name = 'quiz/security_settings.html'

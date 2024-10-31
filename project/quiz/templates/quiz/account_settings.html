@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Account settings
+{% endblock %}
+
+{% block content %}
+    {% load crispy_forms_tags %}
+
+    <ul class="nav nav-pills justify-content-center mt-4 mb-4">
+        <li class="nav-item">
+            {% url 'quiz:settings' as settings_url %}
+            <a class="nav-link {% if request.path == settings_url %}active bg-{{ color_theme }}{% else %}text-{{ color_theme }}{% endif %}"
+               href="{{ settings_url }}">General settings</a>
+        </li>
+        <li class="nav-item">
+            {% url 'quiz:account_settings' as account_settings_url %}
+            <a class="nav-link {% if request.path == account_settings_url %}active bg-{{ color_theme }}{% else %}text-{{ color_theme }}{% endif %}"
+               href="{{ account_settings_url }}">Account settings</a>
+        </li>
+        <li class="nav-item">
+            {% url 'quiz:security_settings' as security_settings_url %}
+            <a class="nav-link {% if request.path == security_settings_url %}active bg-{{ color_theme }}{% else %}text-{{ color_theme }}{% endif %}"
+               href="{{ security_settings_url }}">Security settings</a>
+        </li>
+    </ul>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" class="btn btn-{{ color_theme }} d-flex gap-2 col-3 mx-auto" value="Save" />
+    </form>
+{% endblock %}

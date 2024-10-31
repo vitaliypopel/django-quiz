@@ -1,11 +1,27 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Settings
+    General settings
 {% endblock %}
 
 {% block content %}
-    <h2 class="text-center mt-3 mb-3">Settings</h2>
+    <ul class="nav nav-pills justify-content-center mt-4 mb-4">
+        <li class="nav-item">
+            {% url 'quiz:settings' as settings_url %}
+            <a class="nav-link {% if request.path == settings_url %}active bg-{{ color_theme }}{% else %}text-{{ color_theme }}{% endif %}"
+               href="{{ settings_url }}">General settings</a>
+        </li>
+        <li class="nav-item">
+            {% url 'quiz:account_settings' as account_settings_url %}
+            <a class="nav-link {% if request.path == account_settings_url %}active bg-{{ color_theme }}{% else %}text-{{ color_theme }}{% endif %}"
+               href="{{ account_settings_url }}">Account settings</a>
+        </li>
+        <li class="nav-item">
+            {% url 'quiz:security_settings' as security_settings_url %}
+            <a class="nav-link {% if request.path == security_settings_url %}active bg-{{ color_theme }}{% else %}text-{{ color_theme }}{% endif %}"
+               href="{{ security_settings_url }}">Security settings</a>
+        </li>
+    </ul>
 
     <div class="input-group mt-3 mb-3 w-100">
         <span class="input-group-text border-end-0 bg-transparent flex-grow-1">Change theme</span>

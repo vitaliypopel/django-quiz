@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Security settings
+{% endblock %}
+
+{% block content %}
+    <ul class="nav nav-pills justify-content-center mt-4 mb-4">
+        <li class="nav-item">
+            {% url 'quiz:settings' as settings_url %}
+            <a class="nav-link {% if request.path == settings_url %}active bg-{{ color_theme }}{% else %}text-{{ color_theme }}{% endif %}"
+               href="{{ settings_url }}">General settings</a>
+        </li>
+        <li class="nav-item">
+            {% url 'quiz:account_settings' as account_settings_url %}
+            <a class="nav-link {% if request.path == account_settings_url %}active bg-{{ color_theme }}{% else %}text-{{ color_theme }}{% endif %}"
+               href="{{ account_settings_url }}">Account settings</a>
+        </li>
+        <li class="nav-item">
+            {% url 'quiz:security_settings' as security_settings_url %}
+            <a class="nav-link {% if request.path == security_settings_url %}active bg-{{ color_theme }}{% else %}text-{{ color_theme }}{% endif %}"
+               href="{{ security_settings_url }}">Security settings</a>
+        </li>
+    </ul>
+
+    <div class="input-group mt-3 mb-3 w-100">
+        <span class="input-group-text border-end-0 bg-transparent flex-grow-1">Wanna new password?</span>
+        <a class="btn btn-outline-{{ color_theme }} border border-start-0 text-end" href="{% url 'password_change' %}">
+            Change password
+        </a>
+    </div>
+    <div class="input-group mt-3 mb-3 w-100">
+        <span class="input-group-text border-end-0 bg-transparent flex-grow-1">Forgot your password?</span>
+        <a class="btn btn-outline-{{ color_theme }} border border-start-0 text-end" href="{% url 'password_reset' %}">
+            Reset password
+        </a>
+    </div>
+{% endblock %}

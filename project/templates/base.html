@@ -44,7 +44,9 @@
                                             </li>
                                             <li>
                                                 {% url 'quiz:settings' as settings_url %}
-                                                <a class="nav-link {% if request.path == settings_url %}active{% endif %}"
+                                                {% url 'quiz:account_settings' as account_settings %}
+                                                {% url 'quiz:security_settings' as security_settings %}
+                                                <a class="nav-link {% if request.path == settings_url or request.path == account_settings or request.path == security_settings %}active{% endif %}"
                                                    href="{{ settings_url }}">Settings</a>
                                             </li>
                                             <li>
