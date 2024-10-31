@@ -33,6 +33,18 @@ class QuizView(DetailView):
     def get_object(self):
         return get_object_or_404(self.model, url_title=self.kwargs['quiz_title'])
 
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data()
+        if self.request.user.is_authenticated:
+            completed_quiz = CompletedQuiz.objects.filter(
+                quiz=self.get_object(),
+                user=self.request.user,
+            )
+            if completed_quiz.exists():
+                context_data['is_completed'] = completed_quiz.first().is_completed
+        return context_data
+
+
 
 @method_decorator(decorator=[require_GET, login_required], name='dispatch')
 class QuizQuestionView(View):

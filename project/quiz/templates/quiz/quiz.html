@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <h2 class="text-center mt-3 mb-3">{{ quiz }}</h2>
+    <h2 class="text-center mt-3 mb-3">{{ quiz }}{% if is_completed %} (Completed){% endif %}</h2>
     <p class="text-center fs-5">Descriptions: {{ quiz.descriptions }}</p>
     <p class="text-center fs-5">Questions: {{ quiz.question_set.all|length }}</p>
     <p class="text-center fs-5">
@@ -18,8 +18,15 @@
             text-danger-emphasis
         {% endif %}">{{ quiz.get_complexity_display }}</span>
     </p>
-    <div class="text-center">
-        <a class="btn btn-{{ color_theme }} fs-5"
-           href="{% url 'quiz:question' quiz.url_title 1 %}">Take the quiz</a>
-    </div>
+    {% if is_completed %}
+        <div class="text-center">
+            <a class="btn btn-outline-{{ color_theme }} fs-5"
+               href="{% url 'quiz:result' quiz.url_title %}">Check my result</a>
+        </div>
+    {% else %}
+        <div class="text-center">
+            <a class="btn btn-{{ color_theme }} fs-5"
+               href="{% url 'quiz:question' quiz.url_title 1 %}">Take the quiz</a>
+        </div>
+    {% endif %}
 {% endblock %}
