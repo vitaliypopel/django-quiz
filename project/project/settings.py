@@ -34,9 +34,10 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
 
-    'authentication.apps.AuthenticationConfig',
+    'django_unicorn',
 
-    'quiz.apps.QuizConfig',
+    'authentication',
+    'quiz',
 
     'django.contrib.admin',
     'django.contrib.auth',
