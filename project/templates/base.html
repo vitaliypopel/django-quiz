@@ -34,25 +34,25 @@
                                         <ul class="dropdown-menu dropdown-menu-end mt-2 bg-{{ color_theme }} border border-light">
                                             {% if request.user.is_staff %}
                                                 <li>
-                                                    <a class="nav-link active" href="/admin/">Admin panel <span class="text-warning">★</span></a>
+                                                    <a class="nav-link active ps-3" href="/admin/">Admin panel <span class="text-warning">★</span></a>
                                                 </li>
                                             {% endif %}
                                             <li class="{% if request.user.is_staff %}border-top border-light{% endif %}">
                                                 {% url 'quiz:dashboard' as dashboard_url %}
-                                                <a class="nav-link {% if request.path == dashboard_url %}active{% endif %}"
+                                                <a class="nav-link ps-3 {% if request.path == dashboard_url %}active{% endif %}"
                                                    href="{{ dashboard_url }}">Dashboard</a>
                                             </li>
                                             <li>
                                                 {% url 'quiz:settings' as settings_url %}
                                                 {% url 'quiz:account_settings' as account_settings %}
                                                 {% url 'quiz:security_settings' as security_settings %}
-                                                <a class="nav-link {% if request.path == settings_url or request.path == account_settings or request.path == security_settings %}active{% endif %}"
+                                                <a class="nav-link ps-3 {% if request.path == settings_url or request.path == account_settings or request.path == security_settings %}active{% endif %}"
                                                    href="{{ settings_url }}">Settings</a>
                                             </li>
                                             <li>
                                                 <form method="POST" action="{% url 'logout' %}">
                                                     {% csrf_token %}
-                                                    <input type="submit" class="nav-link" value="Logout">
+                                                    <input type="submit" class="nav-link ps-3" value="Logout">
                                                 </form>
                                             </li>
                                         </ul>
