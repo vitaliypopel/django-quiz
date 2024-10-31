@@ -16,6 +16,13 @@ class QuizzesView(ListView):
     model = Quiz
     context_object_name = 'quizzes'
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        sort_by = self.request.GET.get('sort_by')
+        if not sort_by:
+            return queryset
+        return queryset.order_by(sort_by)
+
 
 @method_decorator(require_GET, name='dispatch')
 class QuizView(DetailView):
