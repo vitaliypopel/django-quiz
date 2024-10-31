@@ -6,6 +6,35 @@
 
 {% block content %}
     <h2 class="text-center mt-3 mb-3">Your dashboard</h2>
+    {% if not_completed_quizzes %}
+        <h4 class="mt-4 mb-3">Continue completing:</h4>
+        {% for not_completed_quiz in not_completed_quizzes %}
+            <div class="card mt-3 mb-3">
+                <div class="card-header">{{ not_completed_quiz.quiz }}</div>
+                <div class="card-body">
+                    <h5 class="card-title">Quiz: "{{ not_completed_quiz.quiz }}"</h5>
+                    <p class="card-text mb-0">
+                        Descriptions: {{ not_completed_quiz.quiz.descriptions|truncatewords:50 }}...
+                    </p>
+                    <p class="card-text mb-0">Questions: {{ not_completed_quiz.quiz.question_set.all|length }}</p>
+                    <p class="card-text">
+                        Complexity: <span class="
+                        {% if not_completed_quiz.quiz.complexity == 1 %}
+                            text-success-emphasis
+                        {% elif not_completed_quiz.quiz.complexity == 2 %}
+                            text-warning-emphasis
+                        {% elif not_completed_quiz.quiz.complexity == 3 %}
+                            text-danger-emphasis
+                        {% endif %}">{{ not_completed_quiz.quiz.get_complexity_display }}</span>
+                    </p>
+                    <a href="{% url 'quiz:result' not_completed_quiz.quiz.url_title %}" class="btn btn-{{ color_theme }}">
+                        Continue
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+        <hr>
+    {% endif %}
     <h4 class="mt-4 mb-3">Completed quizzes:</h4>
     {% if completed_quizzes %}
         {% for completed_quiz in completed_quizzes %}

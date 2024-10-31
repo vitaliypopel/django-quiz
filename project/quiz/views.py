@@ -221,13 +221,13 @@ class DashboardView(View):
     def get(self, request):
         completed_quizzes = CompletedQuiz.objects.filter(
             user=request.user,
-            is_completed=True,
         )
         return render(
             request,
             template_name='quiz/dashboard.html',
             context={
-                'completed_quizzes': completed_quizzes,
+                'completed_quizzes': completed_quizzes.filter(is_completed=True),
+                'not_completed_quizzes': completed_quizzes.filter(is_completed=False),
             },
         )
 
