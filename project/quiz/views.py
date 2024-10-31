@@ -255,6 +255,12 @@ class DashboardView(View):
 
 
 @method_decorator(decorator=[require_http_methods(['GET', 'POST']), login_required], name='dispatch')
+class CreateQuizView(View):
+    def get(self, request):
+        return render(request, template_name='quiz/create_quiz.html')
+
+
+@method_decorator(decorator=[require_http_methods(['GET', 'POST']), login_required], name='dispatch')
 class GeneralSettingsView(View):
     COLORS = {
         'green': 'success',

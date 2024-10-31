@@ -11,6 +11,8 @@ urlpatterns = [
          lambda request: redirect(reverse('quiz:quizzes')), name='home'),
     path('dashboard/',
          views.DashboardView.as_view(), name='dashboard'),
+    path('quizzes/create/',
+         views.CreateQuizView.as_view(), name='create_quiz'),
     path('settings/',
          views.GeneralSettingsView.as_view(), name='settings'),
     path('settings/account/',
