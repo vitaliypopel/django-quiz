@@ -1,9 +1,21 @@
 {% extends 'base.html' %}
 
+{% block unicorn %}
+    {% load unicorn %}
+{% endblock %}
+
+{% block unicorn_scripts %}
+    {% unicorn_scripts %}
+{% endblock %}
+
 {% block title %}
     Create quiz
 {% endblock %}
 
 {% block content %}
     <h2 class="text-center mt-3 mb-3">Create quiz</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {% unicorn 'create_quiz' %}
+    </form>
 {% endblock %}

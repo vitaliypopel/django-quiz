@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
+    path('unicorn/', include('django_unicorn.urls', namespace='django_unicorn')),
     path('admin/', admin.site.urls),
     path('', include('authentication.urls')),
     path('', include('quiz.urls')),
