@@ -49,7 +49,7 @@ class EditQuizView(UnicornView):
 
     def edit_quiz(self):
         self.quizzes = Quiz.objects.all()
-        if self.quizzes.filter(url_title=self.url_title()).exists():
+        if self.is_title_taken():
             return None
 
         self.quiz.url_title = self.url_title()
