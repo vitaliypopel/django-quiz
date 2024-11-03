@@ -267,7 +267,11 @@ class EditQuizView(DetailView):
     context_object_name = 'quiz'
 
     def get_object(self):
-        return get_object_or_404(self.model, url_title=self.kwargs['quiz_title'])
+        return get_object_or_404(
+            self.model,
+            url_title=self.kwargs['quiz_title'],
+            author=self.request.user,
+        )
 
 
 @method_decorator(decorator=[require_http_methods(['GET', 'POST']), login_required], name='dispatch')
