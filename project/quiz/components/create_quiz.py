@@ -44,6 +44,10 @@ class CreateQuizView(UnicornView):
         }
 
     def create_quiz(self):
+        self.quizzes = Quiz.objects.all()
+        if self.quizzes.filter(url_title=self.url_title()).exists():
+            return None
+
         Quiz.objects.create(**self.get_data())
         return redirect(reverse(
             viewname='quiz:quiz',
