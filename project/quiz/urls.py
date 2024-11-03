@@ -13,6 +13,8 @@ urlpatterns = [
          views.DashboardView.as_view(), name='dashboard'),
     path('quizzes/create/',
          views.CreateQuizView.as_view(), name='create_quiz'),
+    path('quizzes/<slug:quiz_title>/edit/',
+         views.EditQuizView.as_view(), name='edit_quiz'),
     path('settings/',
          views.GeneralSettingsView.as_view(), name='settings'),
     path('settings/account/',
