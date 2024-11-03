@@ -6,7 +6,7 @@
 
 {% block content %}
     <h2 class="text-center mt-3 mb-3">{{ quiz }}{% if is_completed %} (Completed){% endif %}</h2>
-    <p class="text-center fs-5">Descriptions: {{ quiz.descriptions }}</p>
+    <p class="text-center fs-5 text-break">Descriptions: {{ quiz.descriptions }}</p>
     <p class="text-center fs-5">Questions: {{ quiz.question_set.all|length }}</p>
     <p class="text-center fs-5">
         Complexity: <span class="
