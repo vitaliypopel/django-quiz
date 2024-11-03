@@ -2,7 +2,7 @@ from django_unicorn.components import UnicornView
 
 from django.shortcuts import redirect, reverse
 
-from quiz.models import Quiz, Question
+from quiz.models import Quiz
 
 
 class EditQuizView(UnicornView):
@@ -13,13 +13,11 @@ class EditQuizView(UnicornView):
     complexity = None
 
     quiz: Quiz
-    questions: list[Question]
 
     def mount(self):
         url_title = self.request.path.replace('/quizzes/', '').replace('/edit/', '')
 
         self.quiz = Quiz.objects.get(url_title=url_title)
-        self.questions = Question.objects.filter(quiz=self.quiz)
 
         self.title = self.quiz.title
         self.descriptions = self.quiz.descriptions
@@ -50,6 +48,10 @@ class EditQuizView(UnicornView):
         return False
 
     def edit_quiz(self):
+        self.quizzes = Quiz.objects.all()
+        if self.quizzes.filter(url_title=self.url_title()).exists():
+            return None
+
         self.quiz.url_title = self.url_title()
         self.quiz.title = self.title
         self.quiz.descriptions = self.descriptions
