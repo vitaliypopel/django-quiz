@@ -6,6 +6,43 @@
 
 {% block content %}
     <h2 class="text-center mt-3 mb-3">Your dashboard</h2>
+    <h4 class="mt-4 mb-3">Your own quizzes:</h4>
+    {% if authored_quizzes %}
+        {% for authored_quiz in authored_quizzes %}
+            <div class="card mt-3 mb-3">
+                <div class="card-header">{{ authored_quiz }}</div>
+                <div class="card-body">
+                    <h5 class="card-title">Quiz: "{{ authored_quiz }}"</h5>
+                    <p class="card-text mb-0">
+                        Descriptions: {{ authored_quiz.descriptions|truncatewords:50 }}...
+                    </p>
+                    <p class="card-text mb-0">Questions: {{ authored_quiz.question_set.all|length }}</p>
+                    <p class="card-text">
+                        Complexity: <span class="
+                        {% if authored_quiz.complexity == 1 %}
+                            text-success-emphasis
+                        {% elif authored_quiz.complexity == 2 %}
+                            text-warning-emphasis
+                        {% elif authored_quiz.complexity == 3 %}
+                            text-danger-emphasis
+                        {% endif %}">{{ authored_quiz.get_complexity_display }}</span>
+                    </p>
+                    <a href="{% url 'quiz:edit_quiz' authored_quiz.url_title %}" class="btn btn-outline-{{ color_theme }}">
+                        Edit
+                    </a>
+                    <a href="{% url 'quiz:quiz' authored_quiz.url_title %}" class="btn btn-{{ color_theme }}">
+                        Open
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="fs-5">You have not created any quizzes</p>
+        <a href="{% url 'quiz:create_quiz' %}" class="btn btn-outline-{{ color_theme }}">
+            Create quiz
+        </a>
+    {% endif %}
+    <hr>
     {% if not_completed_quizzes %}
         <h4 class="mt-4 mb-3">Continue completing:</h4>
         {% for not_completed_quiz in not_completed_quizzes %}

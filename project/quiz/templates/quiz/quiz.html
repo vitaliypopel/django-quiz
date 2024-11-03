@@ -18,15 +18,17 @@
             text-danger-emphasis
         {% endif %}">{{ quiz.get_complexity_display }}</span>
     </p>
-    {% if is_completed %}
-        <div class="text-center">
+    <div class="text-center">
+        {% if request.user == quiz.author %}
             <a class="btn btn-outline-{{ color_theme }} fs-5"
+               href="{% url 'quiz:edit_quiz' quiz.url_title %}">Edit quiz</a>
+        {% endif %}
+        {% if is_completed %}
+            <a class="btn btn-{{ color_theme }} fs-5"
                href="{% url 'quiz:result' quiz.url_title %}">Check my result</a>
-        </div>
-    {% else %}
-        <div class="text-center">
+        {% else %}
             <a class="btn btn-{{ color_theme }} fs-5"
                href="{% url 'quiz:question' quiz.url_title 1 %}">Take the quiz</a>
-        </div>
-    {% endif %}
+        {% endif %}
+    </div>
 {% endblock %}

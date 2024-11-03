@@ -73,6 +73,9 @@
                         text-danger-emphasis
                     {% endif %}">{{ quiz.get_complexity_display }}</span>
                 </p>
+                {% if request.user == quiz.author %}
+                    <a href="{% url 'quiz:edit_quiz' quiz.url_title %}" class="btn btn-outline-{{ color_theme }}">Edit</a>
+                {% endif %}
                 <a href="{% url 'quiz:quiz' quiz.url_title %}" class="btn btn-{{ color_theme }}">Open</a>
             </div>
         </div>

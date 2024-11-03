@@ -239,19 +239,20 @@ class QuizResultView(View):
 
 
 @method_decorator(decorator=[require_GET, login_required], name='dispatch')
-class DashboardView(View):
-    def get(self, request):
-        completed_quizzes = CompletedQuiz.objects.filter(
-            user=request.user,
+class DashboardView(TemplateView):
+    template_name = 'quiz/dashboard.html'
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data()
+
+        context_data['completed_quizzes'] = CompletedQuiz.objects.filter(
+            user=self.request.user,
         )
-        return render(
-            request,
-            template_name='quiz/dashboard.html',
-            context={
-                'completed_quizzes': completed_quizzes.filter(is_completed=True),
-                'not_completed_quizzes': completed_quizzes.filter(is_completed=False),
-            },
+        context_data['authored_quizzes'] = Quiz.objects.filter(
+            author=self.request.user,
         )
+
+        return context_data
 
 
 @method_decorator(decorator=[require_GET, login_required], name='dispatch')
