@@ -17,7 +17,7 @@ class CreateQuizView(UnicornView):
 
     def is_title_taken(self):
         if self.url_title() == 'create':
-            return False
+            return True
         return self.quizzes.filter(url_title=self.url_title()).exists()
 
     def is_title_length_valid(self):
