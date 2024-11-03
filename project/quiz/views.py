@@ -254,23 +254,9 @@ class DashboardView(View):
         )
 
 
-@method_decorator(decorator=[require_http_methods(['GET', 'POST']), login_required], name='dispatch')
-class CreateQuizView(View):
-    def get(self, request):
-        return render(request, template_name='quiz/create_quiz.html')
-
-    def post(self, request):
-        new_quiz_data = {
-            'title': request.POST.get('quiz_title'),
-            'url_title': request.POST.get('quiz_url_title'),
-            'descriptions': request.POST.get('quiz_descriptions'),
-            'complexity': request.POST.get('quiz_complexity'),
-        }
-        new_quiz = Quiz.objects.create(**new_quiz_data)
-        return redirect(reverse(
-            viewname='quiz:quiz',
-            args=(new_quiz.url_title,),
-        ))
+@method_decorator(decorator=[require_GET, login_required], name='dispatch')
+class CreateQuizView(TemplateView):
+    template_name = 'quiz/create_quiz.html'
 
 
 @method_decorator(decorator=[require_http_methods(['GET', 'POST']), login_required], name='dispatch')
