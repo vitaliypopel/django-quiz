@@ -255,25 +255,6 @@ class DashboardView(TemplateView):
         return context_data
 
 
-@method_decorator(decorator=[require_GET, login_required], name='dispatch')
-class CreateQuizView(TemplateView):
-    template_name = 'quiz/create_quiz.html'
-
-
-@method_decorator(decorator=[require_GET, login_required], name='dispatch')
-class EditQuizView(DetailView):
-    template_name = 'quiz/edit_quiz.html'
-    model = Quiz
-    context_object_name = 'quiz'
-
-    def get_object(self):
-        return get_object_or_404(
-            self.model,
-            url_title=self.kwargs['quiz_title'],
-            author=self.request.user,
-        )
-
-
 @method_decorator(decorator=[require_http_methods(['GET', 'POST']), login_required], name='dispatch')
 class GeneralSettingsView(View):
     COLORS = {

@@ -1,6 +1,10 @@
+from tkinter.font import names
+
 from django.urls import path
 
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, reverse
+from django.views.generic import TemplateView
 
 from . import views
 
@@ -9,12 +13,14 @@ app_name = 'quiz'
 urlpatterns = [
     path('',
          lambda request: redirect(reverse('quiz:quizzes')), name='home'),
+    path('quizzes/create/',
+         login_required(TemplateView.as_view(template_name='quiz/create_quiz.html')),
+         name='create_quiz'),
+    path('quizzes/<slug:quiz_title>/edit/',
+         login_required(TemplateView.as_view(template_name='quiz/edit_quiz.html')),
+         name='edit_quiz'),
     path('dashboard/',
          views.DashboardView.as_view(), name='dashboard'),
-    path('quizzes/create/',
-         views.CreateQuizView.as_view(), name='create_quiz'),
-    path('quizzes/<slug:quiz_title>/edit/',
-         views.EditQuizView.as_view(), name='edit_quiz'),
     path('settings/',
          views.GeneralSettingsView.as_view(), name='settings'),
     path('settings/account/',
