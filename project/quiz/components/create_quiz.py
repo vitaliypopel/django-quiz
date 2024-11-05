@@ -21,10 +21,10 @@ class CreateQuizView(UnicornView):
         return self.quizzes.filter(url_title=self.url_title()).exists()
 
     def is_title_length_valid(self):
-        return True if self.title == '' else 2 <= len(self.title) <= 100
+        return 2 <= len(self.title) <= 100
 
     def is_descriptions_length_valid(self):
-        return True if self.descriptions == '' else 10 <= len(self.descriptions) <= 2000
+        return 10 <= len(self.descriptions) <= 2000
 
     def is_form_valid(self):
         if not self.is_title_taken() and \
