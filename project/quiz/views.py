@@ -18,10 +18,18 @@ class QuizzesView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
+
+        query = self.request.GET.get('query')
+        if query:
+            query = ' '.join(query.split())
+            if query != ' ':
+                queryset = queryset.filter(title__icontains=query)
+
         sort_by = self.request.GET.get('sort_by')
-        if not sort_by:
-            return queryset
-        return queryset.order_by(sort_by)
+        if sort_by:
+            queryset = queryset.order_by(sort_by)
+
+        return queryset
 
 
 @method_decorator(require_GET, name='dispatch')
