@@ -10,6 +10,7 @@
     <form method="GET">
         <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Search" name="query" value="{{ request.GET.query|default_if_none:'' }}" />
+            <input type="hidden" name="sort_by" value="{{ request.GET.sort_by|default_if_none:'' }}" />
             <input type="submit" class="btn btn-{{ color_theme }}" value="Search" />
         </div>
     </form>
@@ -23,7 +24,7 @@
 
         <button class="btn btn-outline-{{ color_theme }} border text-end dropdown-toggle ms-auto" type="button"
                 data-bs-toggle="dropdown" aria-expanded="false">
-            Sort by
+            {% if request.GET.sort_by %}{{ request.GET.sort_by }}{% else %}Sort by{% endif %}
         </button>
         <ul class="dropdown-menu dropdown-menu-end mt-2 w-25">
             <li class="dropdown-item bg-{{ theme }}">
