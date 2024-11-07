@@ -10,15 +10,14 @@
     {% if authored_quizzes %}
         {% for authored_quiz in authored_quizzes %}
             <div class="card mt-3 mb-3">
-                <div class="card-header">{{ authored_quiz }}</div>
                 <div class="card-body">
-                    <h5 class="card-title">Quiz: "{{ authored_quiz }}"</h5>
-                    <p class="card-text mb-0">
-                        Descriptions: {{ authored_quiz.descriptions|truncatewords:50 }}...
+                    <h5 class="card-title fw-bold">{{ authored_quiz }}</h5>
+                    <p class="card-text">{{ authored_quiz.descriptions|slice:":50" }}{% if authored_quiz.descriptions|length >= 50 %}...{% endif %}</p>
+                    <p class="card-text mb-0">Number of Questions:
+                        <span class="fw-bold">{{ authored_quiz.question_set.all|length }}</span>
                     </p>
-                    <p class="card-text mb-0">Questions: {{ authored_quiz.question_set.all|length }}</p>
                     <p class="card-text">
-                        Complexity: <span class="
+                        Complexity: <span class="fw-bold
                         {% if authored_quiz.complexity == 1 %}
                             text-success-emphasis
                         {% elif authored_quiz.complexity == 2 %}
@@ -27,11 +26,13 @@
                             text-danger-emphasis
                         {% endif %}">{{ authored_quiz.get_complexity_display }}</span>
                     </p>
-                    <a href="{% url 'quiz:edit_quiz' authored_quiz.url_title %}" class="btn btn-outline-{{ color_theme }}">
-                        Edit
-                    </a>
                     <a href="{% url 'quiz:quiz' authored_quiz.url_title %}" class="btn btn-{{ color_theme }}">
                         Open
+                    </a>
+                    &nbsp;
+                    <a href="{% url 'quiz:manage_quiz' authored_quiz.url_title %}"
+                       class="btn btn-outline-{{ color_theme }}">
+                        Manage
                     </a>
                 </div>
             </div>
@@ -47,15 +48,14 @@
         <h4 class="mt-4 mb-3">Continue completing:</h4>
         {% for not_completed_quiz in not_completed_quizzes %}
             <div class="card mt-3 mb-3">
-                <div class="card-header">{{ not_completed_quiz.quiz }}</div>
                 <div class="card-body">
-                    <h5 class="card-title">Quiz: "{{ not_completed_quiz.quiz }}"</h5>
-                    <p class="card-text mb-0">
-                        Descriptions: {{ not_completed_quiz.quiz.descriptions|truncatewords:50 }}...
+                    <h5 class="card-title fw-bold">{{ not_completed_quiz.quiz }}</h5>
+                    <p class="card-text">{{ not_completed_quiz.quiz.descriptions|slice:":50" }}{% if not_completed_quiz.quiz.descriptions|length >= 50 %}...{% endif %}</p>
+                    <p class="card-text mb-0">Number of Questions:
+                        <span class="fw-bold">{{ not_completed_quiz.quiz.question_set.all|length }}</span>
                     </p>
-                    <p class="card-text mb-0">Questions: {{ not_completed_quiz.quiz.question_set.all|length }}</p>
                     <p class="card-text">
-                        Complexity: <span class="
+                        Complexity: <span class="fw-bold
                         {% if not_completed_quiz.quiz.complexity == 1 %}
                             text-success-emphasis
                         {% elif not_completed_quiz.quiz.complexity == 2 %}
@@ -76,15 +76,14 @@
     {% if completed_quizzes %}
         {% for completed_quiz in completed_quizzes %}
             <div class="card mt-3 mb-3">
-                <div class="card-header">{{ completed_quiz.quiz }}</div>
                 <div class="card-body">
-                    <h5 class="card-title">Quiz: "{{ completed_quiz.quiz }}"</h5>
-                    <p class="card-text mb-0">
-                        Descriptions: {{ completed_quiz.quiz.descriptions|truncatewords:50 }}...
+                    <h5 class="card-title fw-bold">{{ completed_quiz.quiz }}</h5>
+                    <p class="card-text">{{ completed_quiz.quiz.descriptions|slice:":50" }}{% if completed_quiz.quiz.descriptions|length >= 50 %}...{% endif %}</p>
+                    <p class="card-text mb-0">Number of Questions:
+                        <span class="fw-bold">{{ completed_quiz.quiz.question_set.all|length }}</span>
                     </p>
-                    <p class="card-text mb-0">Questions: {{ completed_quiz.quiz.question_set.all|length }}</p>
                     <p class="card-text">
-                        Complexity: <span class="
+                        Complexity: <span class="fw-bold
                         {% if completed_quiz.quiz.complexity == 1 %}
                             text-success-emphasis
                         {% elif completed_quiz.quiz.complexity == 2 %}
@@ -94,7 +93,7 @@
                         {% endif %}">{{ completed_quiz.quiz.get_complexity_display }}</span>
                     </p>
                     <p class="card-text fs-5">
-                        Your result: <u>{{ completed_quiz.result }}/{{ completed_quiz.quiz.question_set.all|length }}</u>
+                        Your result: <b>{{ completed_quiz.result }}/{{ completed_quiz.quiz.question_set.all|length }}</b>
                     </p>
                     <a href="{% url 'quiz:result' completed_quiz.quiz.url_title %}" class="btn btn-{{ color_theme }}">
                         Check detail result

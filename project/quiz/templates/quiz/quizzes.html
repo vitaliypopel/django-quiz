@@ -73,13 +73,14 @@
     </div>
     {% for quiz in quizzes %}
         <div class="card mt-3 mb-3">
-            <div class="card-header">{{ quiz }}</div>
             <div class="card-body">
-                <h5 class="card-title">Quiz: "{{ quiz }}"</h5>
-                <p class="card-text mb-0">Descriptions: {{ quiz.descriptions|truncatewords:50 }}...</p>
-                <p class="card-text mb-0">Questions: {{ quiz.question_set.all|length }}</p>
+                <h5 class="card-title fw-bold">{{ quiz }}</h5>
+                <p class="card-text">{{ quiz.descriptions|slice:":50" }}{% if quiz.descriptions|length >= 50 %}...{% endif %}</p>
+                <p class="card-text mb-0">Number of Questions:
+                    <span class="fw-bold">{{ quiz.question_set.all|length }}</span>
+                </p>
                 <p class="card-text">
-                    Complexity: <span class="
+                    Complexity: <span class="fw-bold
                     {% if quiz.complexity == 1 %}
                         text-success-emphasis
                     {% elif quiz.complexity == 2 %}
@@ -88,10 +89,12 @@
                         text-danger-emphasis
                     {% endif %}">{{ quiz.get_complexity_display }}</span>
                 </p>
-                {% if request.user == quiz.author %}
-                    <a href="{% url 'quiz:edit_quiz' quiz.url_title %}" class="btn btn-outline-{{ color_theme }}">Edit</a>
-                {% endif %}
                 <a href="{% url 'quiz:quiz' quiz.url_title %}" class="btn btn-{{ color_theme }}">Open</a>
+                &nbsp;
+                {% if request.user == quiz.author %}
+                    <a href="{% url 'quiz:manage_quiz' quiz.url_title %}"
+                       class="btn btn-outline-{{ color_theme }}">Manage</a>
+                {% endif %}
             </div>
         </div>
     {% endfor %}

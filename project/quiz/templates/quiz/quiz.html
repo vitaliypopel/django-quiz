@@ -5,30 +5,46 @@
 {% endblock %}
 
 {% block content %}
-    <h2 class="text-center mt-3 mb-3">{{ quiz }}{% if is_completed %} (Completed){% endif %}</h2>
-    <p class="text-center fs-5 text-break">Descriptions: {{ quiz.descriptions }}</p>
-    <p class="text-center fs-5">Questions: {{ quiz.question_set.all|length }}</p>
-    <p class="text-center fs-5">
-        Complexity: <span class="
-        {% if quiz.complexity == 1 %}
-            text-success-emphasis
-        {% elif quiz.complexity == 2 %}
-            text-warning-emphasis
-        {% elif quiz.complexity == 3 %}
-            text-danger-emphasis
-        {% endif %}">{{ quiz.get_complexity_display }}</span>
-    </p>
-    <div class="text-center">
-        {% if request.user == quiz.author %}
-            <a class="btn btn-outline-{{ color_theme }} fs-5"
-               href="{% url 'quiz:edit_quiz' quiz.url_title %}">Edit quiz</a>
-        {% endif %}
-        {% if is_completed %}
-            <a class="btn btn-{{ color_theme }} fs-5"
-               href="{% url 'quiz:result' quiz.url_title %}">Check my result</a>
-        {% else %}
-            <a class="btn btn-{{ color_theme }} fs-5"
-               href="{% url 'quiz:question' quiz.url_title 1 %}">Take the quiz</a>
-        {% endif %}
+    <div class="card mt-3 mb-3">
+        <div class="card-body fs-5">
+            <h2 class="card-title text-center fw-bold">{{ quiz }}{% if is_completed %} (Completed){% endif %}</h2>
+            <p class="card-text text-muted text-center">{{ quiz.descriptions }}</p>
+
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>Complexity:</span>
+                    <span class="fw-bold
+                        {% if quiz.complexity == 1 %}
+                            text-success-emphasis
+                        {% elif quiz.complexity == 2 %}
+                            text-warning-emphasis
+                        {% elif quiz.complexity == 3 %}
+                            text-danger-emphasis
+                        {% endif %}">
+                        {{ quiz.get_complexity_display }}
+                    </span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>Number of Questions:</span>
+                    <span class="fw-bold">{{ quiz.question_set.all|length }}</span>
+                </li>
+            </ul>
+
+            <div class="text-center mt-4">
+                {% if request.user == quiz.author %}
+                    <a class="btn btn-outline-{{ color_theme }} fs-5"
+                       href="{% url 'quiz:manage_quiz' quiz.url_title %}">Manage quiz</a>
+                {% endif %}
+                {% if is_completed %}
+                    &nbsp;
+                    <a class="btn btn-{{ color_theme }} fs-5"
+                       href="{% url 'quiz:result' quiz.url_title %}">Check my result</a>
+                {% elif quiz.question_set.all|length != 0 %}
+                    &nbsp;
+                    <a class="btn btn-{{ color_theme }} fs-5"
+                       href="{% url 'quiz:question' quiz.url_title 1 %}">Take the quiz</a>
+                {% endif %}
+            </div>
+        </div>
     </div>
 {% endblock %}

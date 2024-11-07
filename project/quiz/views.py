@@ -253,11 +253,16 @@ class DashboardView(TemplateView):
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data()
 
-        context_data['completed_quizzes'] = CompletedQuiz.objects.filter(
-            user=self.request.user,
-        )
         context_data['authored_quizzes'] = Quiz.objects.filter(
             author=self.request.user,
+        )
+        context_data['not_completed_quizzes'] = CompletedQuiz.objects.filter(
+            user=self.request.user,
+            is_completed=False,
+        )
+        context_data['completed_quizzes'] = CompletedQuiz.objects.filter(
+            user=self.request.user,
+            is_completed=True,
         )
 
         return context_data
