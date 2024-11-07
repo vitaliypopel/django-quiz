@@ -26,7 +26,9 @@ class EditQuizView(UnicornView):
         self.complexity = self.quiz.complexity
 
     def url_title(self):
-        return self.quiz.title.lower().replace(' ', '-')
+        return ' '.join(
+            self.title.lower().split()
+        ).replace(' ', '-')
 
     def is_title_taken(self):
         if self.url_title() == 'create':
@@ -54,7 +56,7 @@ class EditQuizView(UnicornView):
         if self.is_title_taken():
             return None
 
-        self.quiz.title = self.title
+        self.quiz.title = ' '.join(self.title.split())
         self.quiz.descriptions = self.descriptions
         self.quiz.complexity = self.complexity
         self.quiz.url_title = self.url_title()
