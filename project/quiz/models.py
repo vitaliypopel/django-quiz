@@ -28,6 +28,12 @@ class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     number = models.IntegerField()
     text = models.CharField(max_length=300)
+    variety = models.BooleanField(
+        choices=(
+            (True, 'Single choice'),
+            (False, 'Multiple choices'),
+        ),
+    )
     is_last = models.BooleanField(default=False)
 
     class Meta:
