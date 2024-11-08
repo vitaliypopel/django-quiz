@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.db import transaction
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.utils.decorators import method_decorator
@@ -263,6 +264,24 @@ class DashboardView(TemplateView):
         context_data['completed_quizzes'] = CompletedQuiz.objects.filter(
             user=self.request.user,
             is_completed=True,
+        )
+
+        return context_data
+
+
+@method_decorator(require_GET, name='dispatch')
+class ProfileView(TemplateView):
+    template_name = 'quiz/profile.html'
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data()
+
+        context_data['user'] = get_object_or_404(
+            User,
+            username=self.kwargs.get('username'),
+        )
+        context_data['quizzes'] = Quiz.objects.filter(
+            author=context_data['user'],
         )
 
         return context_data

@@ -28,6 +28,11 @@
                     <span>Number of Questions:</span>
                     <span class="fw-bold">{{ quiz.question_set.all|length }}</span>
                 </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>Author:</span>
+                    <a class="fw-bold text-{% if theme == 'light' %}dark{% else %}light{% endif %}"
+                       href="{% url 'quiz:profile' quiz.author %}">{{ quiz.author }}</a>
+                </li>
             </ul>
 
             <div class="text-center mt-4">

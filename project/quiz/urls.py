@@ -21,6 +21,8 @@ urlpatterns = [
          name='manage_quiz'),
     path('dashboard/',
          views.DashboardView.as_view(), name='dashboard'),
+    path('profile/<slug:username>/',
+         views.ProfileView.as_view(), name='profile'),
     path('settings/',
          views.GeneralSettingsView.as_view(), name='settings'),
     path('settings/account/',

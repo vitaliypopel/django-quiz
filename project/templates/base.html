@@ -39,7 +39,12 @@
                                                     <a class="nav-link active ps-3" href="/admin/">Admin panel <span class="text-warning">★</span></a>
                                                 </li>
                                             {% endif %}
-                                            <li class="{% if request.user.is_staff %}border-top border-light{% endif %}">
+                                            <li>
+                                                {% url 'quiz:profile' request.user as profile_url %}
+                                                <a class="nav-link ps-3 {% if request.path == profile_url %}active{% endif %}"
+                                                   href="{{ profile_url }}">Public profile</a>
+                                            </li>
+                                            <li class="border-top border-{% if theme == 'light' %}dark{% else %}light{% endif %}">
                                                 {% url 'quiz:dashboard' as dashboard_url %}
                                                 <a class="nav-link ps-3 {% if request.path == dashboard_url %}active{% endif %}"
                                                    href="{{ dashboard_url }}">Dashboard</a>
