@@ -1,67 +1,107 @@
 <div>
-    <label class="form-label" for="title">Title</label>
-    <input type="text" class="form-control mb-3"
-           unicorn:model="title" id="title" name="title"
-           minlength="2" maxlength="100"
-    />
+    {% if editing_mode %}
+        <label class="form-label" for="title">Title</label>
+        <input type="text" class="form-control mb-3"
+               unicorn:model="title" id="title" name="title"
+               minlength="2" maxlength="100"
+        />
 
-    {% if not is_title_length_valid %}
-        <p class="text-warning">Quiz title length must be between 2 and 100.</p>
-    {% endif %}
-
-    {% if is_title_taken %}
-        <p class="text-danger">Quiz title already taken. Please choose another one.</p>
-    {% endif %}
-
-    {% if title != '' %}
-        <label class="form-label">URL title</label>
-        <p class="text-break font-monospace">
-            http://www.quiz.com/quizzes/<span class="fw-bold">{{ url_title }}</span>/
-        </p>
-
-        <input type="hidden" name="url_title" value="{{ url_title }}" />
-
-        <label class="form-label" for="descriptions">Descriptions</label>
-        <textarea class="form-control mb-3" id="descriptions" name="descriptions"
-                  unicorn:model="descriptions" minlength="10" maxlength="2000"></textarea>
-
-        {% if not is_descriptions_length_valid %}
-            <p class="text-warning">Quiz descriptions length must be between 10 and 2000.</p>
+        {% if not is_title_length_valid %}
+            <p class="text-warning">Quiz title length must be between 2 and 100.</p>
         {% endif %}
 
-        <label class="form-label">Complexity</label>
-        <div class="form-check">
-            <input class="form-check-input" type="radio"
-                   unicorn:model="complexity"
-                   name="complexity" id="easy" value="1" {% if complexity == 1 %}checked{% endif %} />
-            <label class="form-check-label text-success-emphasis" for="easy">
-                Easy
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio"
-                   unicorn:model="complexity"
-                   name="complexity" id="medium" value="2" {% if complexity == 2 %}checked{% endif %} />
-            <label class="form-check-label text-warning-emphasis" for="medium">
-                Medium
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio"
-                   unicorn:model="complexity"
-                   name="complexity" id="hard" value="3" {% if complexity == 3 %}checked{% endif %} />
-            <label class="form-check-label text-danger-emphasis" for="hard">
-                Hard
-            </label>
-        </div>
+        {% if is_title_taken %}
+            <p class="text-danger">Quiz title already taken. Please choose another one.</p>
+        {% endif %}
 
-        {% if is_form_valid %}
+        {% if title != '' %}
+            <label class="form-label">URL title</label>
+            <p class="text-break font-monospace">
+                http://www.quiz.com/quizzes/<span class="fw-bold">{{ url_title }}</span>/
+            </p>
+
+            <input type="hidden" name="url_title" value="{{ url_title }}" />
+
+            <label class="form-label" for="descriptions">Descriptions</label>
+            <textarea class="form-control mb-3" id="descriptions" name="descriptions"
+                      unicorn:model="descriptions" minlength="10" maxlength="2000"></textarea>
+
+            {% if not is_descriptions_length_valid %}
+                <p class="text-warning">Quiz descriptions length must be between 10 and 2000.</p>
+            {% endif %}
+
+            <label class="form-label">Complexity</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio"
+                       unicorn:model="complexity"
+                       name="complexity" id="easy" value="1" {% if complexity == 1 %}checked{% endif %} />
+                <label class="form-check-label text-success-emphasis" for="easy">
+                    Easy
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio"
+                       unicorn:model="complexity"
+                       name="complexity" id="medium" value="2" {% if complexity == 2 %}checked{% endif %} />
+                <label class="form-check-label text-warning-emphasis" for="medium">
+                    Medium
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio"
+                       unicorn:model="complexity"
+                       name="complexity" id="hard" value="3" {% if complexity == 3 %}checked{% endif %} />
+                <label class="form-check-label text-danger-emphasis" for="hard">
+                    Hard
+                </label>
+            </div>
+
             <div class="d-flex justify-content-center">
-                <button type="button" class="btn btn-{{ color_theme }} gap-2 col-3"
-                        unicorn:click="edit_quiz">
-                    Edit
+                <button type="button" class="btn btn-outline-{{ color_theme }} gap-2 col-3"
+                        unicorn:click="editing">
+                    Cancel
                 </button>
+                {% if is_form_valid %}
+                    &nbsp;&nbsp;&nbsp;
+                    <button type="button" class="btn btn-{{ color_theme }} gap-2 col-3"
+                            unicorn:click="save_quiz">
+                        Save
+                    </button>
+                {% endif %}
             </div>
         {% endif %}
+    {% else %}
+        <div class="card mt-3 mb-3">
+            <div class="card-body fs-5">
+                <h2 class="card-title text-center fw-bold">{{ quiz }}</h2>
+                <p class="card-text text-muted text-center">{{ quiz.descriptions }}</p>
+
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Complexity:</span>
+                        <span class="fw-bold
+                            {% if quiz.complexity == 1 %}
+                                text-success-emphasis
+                            {% elif quiz.complexity == 2 %}
+                                text-warning-emphasis
+                            {% elif quiz.complexity == 3 %}
+                                text-danger-emphasis
+                            {% endif %}">
+                            {{ quiz.get_complexity_display }}
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Number of Questions:</span>
+                        <span class="fw-bold">{{ quiz.question_set.all|length }}</span>
+                    </li>
+                </ul>
+
+                <div class="text-center mt-4">
+                    <button type="button" class="btn btn-{{ color_theme }} gap-2 col-3" unicorn:click="editing">
+                        Edit
+                    </button>
+                </div>
+            </div>
+        </div>
     {% endif %}
 </div>

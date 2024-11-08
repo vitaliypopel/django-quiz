@@ -1,9 +1,18 @@
 {% extends 'base.html' %}
 
+{% block unicorn %}
+    {% load unicorn %}
+{% endblock %}
+
+{% block unicorn_scripts %}
+    {% unicorn_scripts %}
+{% endblock %}
+
 {% block title %}
     Manage quiz
 {% endblock %}
 
 {% block content %}
     <h2 class="text-center mt-3 mb-3">Manage quiz</h2>
+    {% unicorn 'edit_quiz' %}
 {% endblock %}
