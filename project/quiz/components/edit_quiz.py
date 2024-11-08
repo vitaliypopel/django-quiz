@@ -1,6 +1,6 @@
 from django_unicorn.components import UnicornView
 
-from django.shortcuts import redirect, reverse, get_object_or_404
+from django.shortcuts import get_object_or_404
 
 from quiz.models import Quiz
 
