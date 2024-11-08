@@ -6,7 +6,7 @@
 
 {% block content %}
     <h2 class="text-center mt-3 mb-3">Profile {{ user }}</h2>
-    <h4 class="mt-4 mb-3">User's quizzes:</h4>
+    <h4 class="mt-4 mb-3">{{ user }}'s quizzes:</h4>
     {% if quizzes %}
         {% for quiz in quizzes %}
             <div class="card mt-3 mb-3">

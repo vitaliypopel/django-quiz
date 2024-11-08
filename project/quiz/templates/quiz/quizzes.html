@@ -90,10 +90,7 @@
             <div class="card-body">
                 <h5 class="card-title fw-bold">{{ quiz }}</h5>
                 <p class="card-text">{{ quiz.descriptions|slice:":50" }}{% if quiz.descriptions|length >= 50 %}...{% endif %}</p>
-                <p class="card-text mb-0">Number of Questions:
-                    <span class="fw-bold">{{ quiz.question_set.all|length }}</span>
-                </p>
-                <p class="card-text">
+                <p class="card-text mb-0">
                     Complexity: <span class="fw-bold
                     {% if quiz.complexity == 1 %}
                         text-success-emphasis
@@ -102,6 +99,13 @@
                     {% elif quiz.complexity == 3 %}
                         text-danger-emphasis
                     {% endif %}">{{ quiz.get_complexity_display }}</span>
+                </p>
+                <p class="card-text mb-0">Number of Questions:
+                    <span class="fw-bold">{{ quiz.question_set.all|length }}</span>
+                </p>
+                <p class="card-text">Author:
+                    <a class="fw-bold text-{% if theme == 'light' %}dark{% else %}light{% endif %}"
+                       href="{% url 'quiz:profile' quiz.author %}">{{ quiz.author }}</a>
                 </p>
                 <a href="{% url 'quiz:quiz' quiz.url_title %}" class="btn btn-{{ color_theme }}">Open</a>
                 &nbsp;

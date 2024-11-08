@@ -13,10 +13,7 @@
                 <div class="card-body">
                     <h5 class="card-title fw-bold">{{ authored_quiz }}</h5>
                     <p class="card-text">{{ authored_quiz.descriptions|slice:":50" }}{% if authored_quiz.descriptions|length >= 50 %}...{% endif %}</p>
-                    <p class="card-text mb-0">Number of Questions:
-                        <span class="fw-bold">{{ authored_quiz.question_set.all|length }}</span>
-                    </p>
-                    <p class="card-text">
+                    <p class="card-text mb-0">
                         Complexity: <span class="fw-bold
                         {% if authored_quiz.complexity == 1 %}
                             text-success-emphasis
@@ -25,6 +22,9 @@
                         {% elif authored_quiz.complexity == 3 %}
                             text-danger-emphasis
                         {% endif %}">{{ authored_quiz.get_complexity_display }}</span>
+                    </p>
+                    <p class="card-text">Number of Questions:
+                        <span class="fw-bold">{{ authored_quiz.question_set.all|length }}</span>
                     </p>
                     <a href="{% url 'quiz:quiz' authored_quiz.url_title %}" class="btn btn-{{ color_theme }}">
                         Open
@@ -51,10 +51,7 @@
                 <div class="card-body">
                     <h5 class="card-title fw-bold">{{ not_completed_quiz.quiz }}</h5>
                     <p class="card-text">{{ not_completed_quiz.quiz.descriptions|slice:":50" }}{% if not_completed_quiz.quiz.descriptions|length >= 50 %}...{% endif %}</p>
-                    <p class="card-text mb-0">Number of Questions:
-                        <span class="fw-bold">{{ not_completed_quiz.quiz.question_set.all|length }}</span>
-                    </p>
-                    <p class="card-text">
+                    <p class="card-text mb-0">
                         Complexity: <span class="fw-bold
                         {% if not_completed_quiz.quiz.complexity == 1 %}
                             text-success-emphasis
@@ -63,6 +60,13 @@
                         {% elif not_completed_quiz.quiz.complexity == 3 %}
                             text-danger-emphasis
                         {% endif %}">{{ not_completed_quiz.quiz.get_complexity_display }}</span>
+                    </p>
+                    <p class="card-text mb-0">Number of Questions:
+                        <span class="fw-bold">{{ not_completed_quiz.quiz.question_set.all|length }}</span>
+                    </p>
+                    <p class="card-text">Author:
+                        <a class="fw-bold text-{% if theme == 'light' %}dark{% else %}light{% endif %}"
+                           href="{% url 'quiz:profile' not_completed_quiz.quiz.author %}">{{ not_completed_quiz.quiz.author }}</a>
                     </p>
                     <a href="{% url 'quiz:result' not_completed_quiz.quiz.url_title %}" class="btn btn-{{ color_theme }}">
                         Continue
@@ -79,10 +83,7 @@
                 <div class="card-body">
                     <h5 class="card-title fw-bold">{{ completed_quiz.quiz }}</h5>
                     <p class="card-text">{{ completed_quiz.quiz.descriptions|slice:":50" }}{% if completed_quiz.quiz.descriptions|length >= 50 %}...{% endif %}</p>
-                    <p class="card-text mb-0">Number of Questions:
-                        <span class="fw-bold">{{ completed_quiz.quiz.question_set.all|length }}</span>
-                    </p>
-                    <p class="card-text">
+                    <p class="card-text mb-0">
                         Complexity: <span class="fw-bold
                         {% if completed_quiz.quiz.complexity == 1 %}
                             text-success-emphasis
@@ -91,6 +92,13 @@
                         {% elif completed_quiz.quiz.complexity == 3 %}
                             text-danger-emphasis
                         {% endif %}">{{ completed_quiz.quiz.get_complexity_display }}</span>
+                    </p>
+                    <p class="card-text mb-0">Number of Questions:
+                        <span class="fw-bold">{{ completed_quiz.quiz.question_set.all|length }}</span>
+                    </p>
+                    <p class="card-text">Author:
+                        <a class="fw-bold text-{% if theme == 'light' %}dark{% else %}light{% endif %}"
+                           href="{% url 'quiz:profile' completed_quiz.quiz.author %}">{{ completed_quiz.quiz.author }}</a>
                     </p>
                     <p class="card-text fs-5">
                         Your result: <b>{{ completed_quiz.result }}/{{ completed_quiz.quiz.question_set.all|length }}</b>
