@@ -10,7 +10,9 @@
     <form method="GET">
         <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Search" name="query" value="{{ request.GET.query|default_if_none:'' }}" />
-            <input type="hidden" name="sort_by" value="{{ request.GET.sort_by|default_if_none:'' }}" />
+            {% if request.GET.sort_by %}
+                <input type="hidden" name="sort_by" value="{{ request.GET.sort_by }}" />
+            {% endif %}
             <input type="submit" class="btn btn-{{ color_theme }}" value="Search" />
         </div>
     </form>
@@ -29,42 +31,54 @@
         <ul class="dropdown-menu dropdown-menu-end mt-2 w-25">
             <li class="dropdown-item bg-{{ theme }}">
                 <form method="GET">
-                    <input type="hidden" name="query" value="{{ request.GET.query|default_if_none:'' }}" />
+                    {% if request.GET.query %}
+                        <input type="hidden" name="query" value="{{ request.GET.query }}" />
+                    {% endif %}
                     <input type="hidden" name="sort_by" value="-title" />
                     <input type="submit" class="btn bg-{{ theme }}" value="By title: descending" />
                 </form>
             </li>
             <li class="dropdown-item bg-{{ theme }}">
                 <form method="GET">
-                    <input type="hidden" name="query" value="{{ request.GET.query|default_if_none:'' }}" />
+                    {% if request.GET.query %}
+                        <input type="hidden" name="query" value="{{ request.GET.query }}" />
+                    {% endif %}
                     <input type="hidden" name="sort_by" value="title" />
                     <input type="submit" class="btn bg-{{ theme }}" value="By title: ascending" />
                 </form>
             </li>
             <li class="dropdown-item bg-{{ theme }}">
                 <form method="GET">
-                    <input type="hidden" name="query" value="{{ request.GET.query|default_if_none:'' }}" />
+                    {% if request.GET.query %}
+                        <input type="hidden" name="query" value="{{ request.GET.query }}" />
+                    {% endif %}
                     <input type="hidden" name="sort_by" value="-complexity" />
                     <input type="submit" class="btn bg-{{ theme }}" value="By complexity: descending" />
                 </form>
             </li>
             <li class="dropdown-item bg-{{ theme }}">
                 <form method="GET">
-                    <input type="hidden" name="query" value="{{ request.GET.query|default_if_none:'' }}" />
+                    {% if request.GET.query %}
+                        <input type="hidden" name="query" value="{{ request.GET.query }}" />
+                    {% endif %}
                     <input type="hidden" name="sort_by" value="complexity" />
                     <input type="submit" class="btn bg-{{ theme }}" value="By complexity: ascending" />
                 </form>
             </li>
             <li class="dropdown-item bg-{{ theme }}">
                 <form method="GET">
-                    <input type="hidden" name="query" value="{{ request.GET.query|default_if_none:'' }}" />
+                    {% if request.GET.query %}
+                        <input type="hidden" name="query" value="{{ request.GET.query }}" />
+                    {% endif %}
                     <input type="hidden" name="sort_by" value="-created_at" />
                     <input type="submit" class="btn bg-{{ theme }}" value="By date: descending" />
                 </form>
             </li>
             <li class="dropdown-item bg-{{ theme }}">
                 <form method="GET">
-                    <input type="hidden" name="query" value="{{ request.GET.query|default_if_none:'' }}" />
+                    {% if request.GET.query %}
+                        <input type="hidden" name="query" value="{{ request.GET.query }}" />
+                    {% endif %}
                     <input type="hidden" name="sort_by" value="created_at" />
                     <input type="submit" class="btn bg-{{ theme }}" value="By date: ascending" />
                 </form>
