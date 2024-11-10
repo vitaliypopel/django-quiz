@@ -1,6 +1,6 @@
 from django_unicorn.components import UnicornView
 
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, reverse
 
 from quiz.models import Quiz
 
@@ -76,3 +76,7 @@ class EditQuizView(UnicornView):
         self.quiz.save()
 
         self.editing()
+
+    def delete_quiz(self):
+        Quiz.objects.get(url_title=self.url_title()).delete()
+        return redirect(reverse('quiz:dashboard'))
