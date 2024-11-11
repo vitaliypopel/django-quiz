@@ -1,11 +1,11 @@
 from django_unicorn.components import UnicornView
 
-from django.shortcuts import get_object_or_404, redirect, reverse
+from django.shortcuts import redirect, reverse
 
 from quiz.models import Quiz
 
 
-class EditQuizView(UnicornView):
+class ManageQuizView(UnicornView):
     quizzes = Quiz.objects.all()
 
     quiz: Quiz
@@ -18,14 +18,6 @@ class EditQuizView(UnicornView):
     editing_mode = False
 
     def mount(self):
-        url_title = self.request.path.replace('/quizzes/', '').replace('/manage/', '')
-
-        self.quiz = get_object_or_404(
-            Quiz,
-            url_title=url_title,
-            author=self.request.user,
-        )
-
         self.set_data()
 
     def set_data(self):
@@ -74,6 +66,12 @@ class EditQuizView(UnicornView):
         self.quiz.complexity = self.complexity
         self.quiz.url_title = self.url_title()
         self.quiz.save()
+
+        if self.latest_url_title != self.quiz.url_title:
+            return redirect(reverse(
+                viewname='quiz:manage_quiz',
+                args=(self.quiz.url_title,),
+            ))
 
         self.editing()
 

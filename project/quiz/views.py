@@ -269,6 +269,27 @@ class DashboardView(TemplateView):
         return context_data
 
 
+@method_decorator(decorator=[require_GET, login_required], name='dispatch')
+class CreateQuizView(TemplateView):
+    template_name = 'quiz/create_quiz.html'
+
+
+@method_decorator(decorator=[require_GET, login_required], name='dispatch')
+class ManageQuizView(TemplateView):
+    template_name = 'quiz/manage_quiz.html'
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data()
+
+        context_data['quiz'] = get_object_or_404(
+            Quiz,
+            url_title=self.kwargs.get('quiz_title'),
+            author=self.request.user,
+        )
+
+        return context_data
+
+
 @method_decorator(require_GET, name='dispatch')
 class ProfileView(TemplateView):
     template_name = 'quiz/profile.html'
