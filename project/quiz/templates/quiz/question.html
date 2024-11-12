@@ -17,8 +17,8 @@
         {% for choice in question.choice_set.all %}
             <div class="input-group mt-3 mb-3">
                 <div class="input-group-text">
-                    <input class="form-check-input" type="radio"
-                           name="choice" id="{{ choice.pk }}" value="{{ choice.pk }}" required>
+                    <input class="form-check-input" type="{% if question.variety %}radio{% else %}checkbox{% endif %}"
+                           name="choice" id="{{ choice.pk }}" value="{{ choice.pk }}" {% if question.variety %}required{% endif %}}>
                 </div>
                 <label class="form-control fs-5" for="{{ choice.pk }}">
                     {{ choice }}

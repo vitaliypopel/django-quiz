@@ -14,25 +14,27 @@
         <input class="btn btn-outline-{{ color_theme }} fs-5 mb-3" type="submit" value="Take the quiz again">
     </form>
     <hr>
-    {% for answer in answers %}
+    {% for question in completed_quiz.quiz.question_set.all %}
         <h4>
-            {{ answer.question.number }}).
-            <b>{{ answer.question.text }}</b>
+            {{ question.number }}).
+            <b>{{ question.text }}</b>
         </h4>
         <ul>
-            {% for choice in answer.question.choice_set.all %}
-                <li class="fs-5">
+            {% for choice in question.choice_set.all %}
+                <li class="fs-5" style="{% if not answer.question.variety %}list-style-type: square;{% endif %}">
                     <span class="text-{% if choice.is_correct %}success{% endif %}">
                         {{ choice }}
                     </span>
-                    {% if choice.pk == answer.choice.pk %}
-                        <i class="text-secondary">- your answer</i>
-                        {% if answer.is_correct %}
-                            <u class="text-success-emphasis">Correct</u>
-                        {% else %}
-                            <u class="text-danger-emphasis">Incorrect</u>
+                    {% for answer in answers %}
+                        {% if choice.pk == answer.choice.pk %}
+                            <i class="text-secondary">- your answer</i>
+                            {% if answer.is_correct %}
+                                <u class="text-success-emphasis">Correct</u>
+                            {% else %}
+                                <u class="text-danger-emphasis">Incorrect</u>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
+                    {% endfor %}
                 </li>
             {% endfor %}
         </ul>

@@ -1,3 +1,5 @@
+from secrets import choice
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import transaction
@@ -130,16 +132,21 @@ class QuizAnswerView(View):
         quiz = get_object_or_404(Quiz, url_title=quiz_title)
         question = get_object_or_404(Question, quiz=quiz, number=question_id)
 
-        choice_id = int(request.POST.get('choice'))
-        choice = get_object_or_404(Choice, pk=choice_id)
+        choices = request.POST.getlist('choice')
+        if not isinstance(choices, list):
+            choices = [choices]
 
-        Answer.objects.create(
-            user=user,
-            quiz=quiz,
-            question=question,
-            choice=choice,
-            is_correct=choice.is_correct,
-        )
+        with transaction.atomic():
+            for choice_pk in choices:
+                choice = get_object_or_404(Choice, pk=choice_pk)
+
+                Answer.objects.create(
+                    user=user,
+                    quiz=quiz,
+                    question=question,
+                    choice=choice,
+                    is_correct=choice.is_correct,
+                )
 
         return redirect(reverse(
             viewname='quiz:question',
@@ -155,17 +162,21 @@ class QuizCompleteView(View):
         quiz = get_object_or_404(Quiz, url_title=quiz_title)
         question = get_object_or_404(Question, quiz=quiz, number=question_id)
 
-        choice_id = int(request.POST.get('choice'))
-        choice = get_object_or_404(Choice, pk=choice_id)
+        choices = request.POST.getlist('choice')
+        if not isinstance(choices, list):
+            choices = [choices]
 
         with transaction.atomic():
-            Answer.objects.create(
-                user=user,
-                quiz=quiz,
-                question=question,
-                choice=choice,
-                is_correct=choice.is_correct,
-            )
+            for choice_pk in choices:
+                choice = get_object_or_404(Choice, pk=choice_pk)
+
+                Answer.objects.create(
+                    user=user,
+                    quiz=quiz,
+                    question=question,
+                    choice=choice,
+                    is_correct=choice.is_correct,
+                )
 
             completed_quiz = get_object_or_404(
                 CompletedQuiz,
