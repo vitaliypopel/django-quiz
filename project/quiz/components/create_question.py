@@ -17,9 +17,7 @@ class CreateQuestionView(UnicornView):
     creating_mode = False
 
     def mount(self):
-        self.questions = Question.objects.filter(
-            quiz=self.quiz,
-        )
+        self.set_default_data()
 
     def is_number_valid(self):
         return 1 <= int(self.number) <= 50 and \
