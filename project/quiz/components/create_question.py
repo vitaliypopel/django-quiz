@@ -1,6 +1,7 @@
 from django_unicorn.components import UnicornView
 
 from django.db import transaction
+from django.shortcuts import redirect, reverse
 
 from quiz.models import Quiz, Question
 
@@ -73,4 +74,7 @@ class CreateQuestionView(UnicornView):
                 **self.get_data(),
             )
 
-        self.creating()
+        return redirect(reverse(
+            viewname='quiz:manage_quiz',
+            args=(self.quiz.url_title,),
+        ))
