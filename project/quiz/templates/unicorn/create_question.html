@@ -1,0 +1,67 @@
+<div>
+    <h4 class="mt-4 mb-3">Questions:</h4>
+    {% if creating_mode %}
+        <label class="form-label" for="number">Number</label>
+        <input type="number" class="form-control mb-3"
+               unicorn:model="number" id="number" name="number"
+               min="1" max="50"
+        />
+        {% if not is_number_valid %}
+            <p class="text-warning">Question number must be between 1 and 50 or not in existing numbers.</p>
+        {% endif %}
+
+        <label class="form-label" for="text">Question</label>
+        <input type="text" class="form-control mb-3"
+               unicorn:model="text" id="text" name="text"
+               minlength="10" maxlength="300"
+        />
+        {% if not is_text_length_valid %}
+            <p class="text-warning">Question text length must be between 10 and 300.</p>
+        {% endif %}
+
+        <label class="form-label">Variety</label>
+        <div class="form-check">
+            <input class="form-check-input" type="radio"
+                   unicorn:model="variety"
+                   name="variety" id="single-choice" value="1" />
+            <label class="form-check-label" for="single-choice">
+                Single choice
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio"
+                   unicorn:model="variety"
+                   name="variety" id="multiple-choices" value="0" />
+            <label class="form-check-label" for="multiple-choices">
+                Multiple choices
+            </label>
+        </div>
+        <br>
+        <label class="form-label">Is question last?</label>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox"
+                   unicorn:model="is_last"
+                   name="variety" id="is_last" value="1" />
+            <label class="form-check-label" for="is_last">
+                Is last
+            </label>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <button type="button" class="btn btn-outline-{{ color_theme }} gap-2 col-3"
+                    unicorn:click="creating">
+                Cancel
+            </button>
+            {% if is_form_valid %}
+                &nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-{{ color_theme }} gap-2 col-3"
+                        unicorn:click="create_question">
+                    Create
+                </button>
+            {% endif %}
+        </div>
+    {% else %}
+        <button type="button" class="btn btn-{{ color_theme }} gap-2 col-3"
+                unicorn:click="creating">Create question</button>
+    {% endif %}
+</div>

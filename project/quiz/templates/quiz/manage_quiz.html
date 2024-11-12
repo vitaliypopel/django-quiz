@@ -15,4 +15,6 @@
 {% block content %}
     <h2 class="text-center mt-3 mb-3">Manage quiz</h2>
     {% unicorn 'manage_quiz' quiz=quiz %}
+    {% unicorn 'create_question' quiz=quiz %}
+    <br>
 {% endblock %}
