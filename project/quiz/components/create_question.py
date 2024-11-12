@@ -25,7 +25,7 @@ class CreateQuestionView(UnicornView):
             not self.questions.filter(number=self.number).exists()
 
     def is_text_length_valid(self):
-        return 2 <= len(self.text) <= 100
+        return 10 <= len(self.text) <= 300
 
     def is_form_valid(self):
         if self.variety is not None and \
